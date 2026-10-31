@@ -1,0 +1,925 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Beads by Jummymira</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap">
+<style>
+/* Layout concept: three views on one hash router. Home = plum hero, six beads for sale, a short rental band that leads out.
+   Shop = every bead for sale. Rent = the rental page (pieces, how it works, deposit and return rules). One order sheet serves both. */
+:root{
+  --bg:#fcf7fd;
+  --surface:#ffffff;
+  --surface-2:#f6ebf8;
+  --ink:#2a1630;
+  --muted:#6a566f;
+  --line:#e8d8ea;
+  --accent:#b514d6;
+  --accent-ink:#ffffff;
+  --accent-soft:#f3d9f8;
+  --focus:#7a0f91;
+  --band:#2a1230;
+  --band-fg:#f7ecf8;
+  --band-muted:#cdb6d2;
+  --panel-a:#8a1fa0;
+  --panel-b:#3a0f45;
+  --panel-c:#1b0a21;
+  --panel-fg:#ffffff;
+  --tile-a:#f4e7f6;
+  --tile-b:#e7d2ec;
+  --chip-bg:#ffffff;
+  --danger:#b3261e;
+  --font-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --font-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --gutter-l:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#150c19;--surface:#1f1226;--surface-2:#2a1833;--ink:#f6eaf8;--muted:#b9a2bf;--line:#3a2644;
+  --accent:#e07af5;--accent-ink:#1a0b1f;--accent-soft:#3b1a45;--focus:#f0b3ff;
+  --band:#0e0712;--band-fg:#f6eaf8;--band-muted:#b9a2bf;--danger:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#150c19;--surface:#1f1226;--surface-2:#2a1833;--ink:#f6eaf8;--muted:#b9a2bf;--line:#3a2644;
+  --accent:#e07af5;--accent-ink:#1a0b1f;--accent-soft:#3b1a45;--focus:#f0b3ff;
+  --band:#0e0712;--band-fg:#f6eaf8;--band-muted:#b9a2bf;--danger:#ff8a80;color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.lock{overflow:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+img,svg{max-width:100%}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;line-height:1.05;letter-spacing:-.02em}
+p{margin:0;text-wrap:pretty}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:.4rem}
+.wrap{width:min(100%,76rem);margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+section{padding-block:clamp(3rem,7vw,5.5rem)}
+section[id]{scroll-margin-top:5rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3rem;padding:.7rem 1.4rem;border-radius:999px;border:1.5px solid transparent;font:600 1rem/1.2 var(--font-body);text-decoration:none;cursor:pointer;transition:transform .15s,filter .15s,background .15s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
+.btn.ghost:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
+.btn.light{background:var(--band-fg);color:var(--band)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.55;cursor:not-allowed;filter:none}
+.link-btn{background:none;border:0;padding:.5rem 0;color:var(--muted);font:500 .875rem var(--font-body);text-decoration:underline;cursor:pointer;min-height:2.75rem}
+
+.top{background:var(--band);color:var(--band-fg);font-size:.8125rem;text-align:center}
+.top .wrap{padding-block:.55rem}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:.75rem;padding-block:.6rem}
+.logo-chip{display:inline-flex;justify-self:start;background:var(--chip-bg);border:1px solid var(--line);border-radius:.7rem;padding:.3rem .65rem;line-height:0}
+.logo-chip img{display:block;height:2.25rem;width:auto;max-width:100%}
+.actions{display:flex;align-items:center;gap:.5rem}
+.menu-btn,.cart-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:3rem;min-width:3rem;border-radius:.9rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:600 .9375rem var(--font-body)}
+.cart-btn{background:var(--accent);color:var(--accent-ink);border-color:transparent;padding:0 .9rem}
+.cart-btn .count{display:inline-grid;place-items:center;min-width:1.5rem;height:1.5rem;padding:0 .35rem;border-radius:999px;background:var(--accent-ink);color:var(--accent);font:700 .8125rem var(--font-body)}
+.cart-label{display:none}
+.nav-links{grid-column:1/-1;display:none;flex-direction:column;padding:.25rem 0 1rem}
+.nav-links.open{display:flex}
+.nav-links a{text-decoration:none;font-weight:500;padding:.8rem .25rem;border-bottom:1px solid var(--line)}
+.nav-links a[aria-current="page"]{color:var(--accent);font-weight:700}
+@media (min-width:30rem){.cart-label{display:inline}}
+@media (min-width:52rem){
+  .bar{grid-template-columns:auto 1fr auto;column-gap:2rem}
+  .menu-btn{display:none}
+  .nav-links{grid-column:2;grid-row:1;display:flex;flex-direction:row;justify-content:flex-end;gap:1.75rem;padding:0}
+  .nav-links a{border-bottom:0;padding:.4rem 0;font-size:.95rem}
+}
+
+.hero{padding-block:clamp(2rem,6vw,4.5rem)}
+.hero-grid{display:grid;gap:2rem;align-items:center}
+.hero h1{font-size:clamp(3.1rem,12.5vw,6.5rem);font-weight:800;line-height:.92;letter-spacing:-.035em}
+.lede{margin-top:1.25rem;max-width:34rem;font-size:clamp(1.0625rem,2.4vw,1.25rem);color:var(--muted)}
+.cta-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:1.75rem 0 0;padding:0;list-style:none;font-size:.9375rem;color:var(--muted)}
+.facts li{display:flex;align-items:center;gap:.5rem}
+.facts svg{flex:none;width:1.1rem;height:1.1rem;color:var(--accent)}
+.panel{position:relative;overflow:hidden;border-radius:1.75rem;aspect-ratio:4/5;max-height:38rem;width:100%;
+  background:radial-gradient(120% 90% at 75% 8%,var(--panel-a),var(--panel-b) 48%,var(--panel-c));color:var(--panel-fg)}
+.panel svg.drape{position:absolute;inset:0;width:100%;height:100%}
+.panel p{position:absolute;left:1.5rem;right:1.5rem;bottom:1.4rem;font:600 clamp(1.25rem,3.5vw,1.6rem)/1.2 var(--font-display);letter-spacing:-.01em}
+.sway{transform-box:view-box;transform-origin:50% 0;animation:sway 7s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+@keyframes sway{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
+@media (min-width:52rem){.hero-grid{grid-template-columns:1.1fr .9fr;gap:3.5rem}}
+
+.head{max-width:40rem;margin-bottom:2rem}
+.head h2,.pagehead h1{font-size:clamp(2rem,5.5vw,3.1rem);font-weight:700}
+.head p,.pagehead p{margin-top:.75rem;color:var(--muted);font-size:1.0625rem}
+.pagehead{max-width:42rem;padding-block:clamp(2rem,5vw,3.5rem) 0}
+.crumb{display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1rem;color:var(--muted);font-size:.9375rem;text-decoration:none;min-height:2.75rem}
+.crumb:hover{color:var(--ink)}
+.more{display:flex;justify-content:center;margin-top:2rem}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;min-height:2.75rem;padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9375rem var(--font-body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.toggle{margin-left:auto}
+.chip.toggle::before{content:"";width:.7rem;height:.7rem;border-radius:50%;border:2px solid currentColor}
+.chip.toggle[aria-pressed="true"]::before{background:currentColor}
+.shown{margin:0 0 1.25rem;color:var(--muted);font-size:.875rem}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,17.5rem),1fr))}
+.card{display:flex;flex-direction:column;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:1.25rem;overflow:hidden}
+.tile{position:relative;aspect-ratio:4/3;background:radial-gradient(90% 90% at 50% 20%,var(--tile-a),var(--tile-b))}
+.tile svg,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card.out .tile svg,.card.out .tile img{opacity:.5;filter:grayscale(.5)}
+.tag,.pill{position:absolute;top:.75rem;padding:.2rem .7rem;border-radius:999px;font-size:.8125rem;font-weight:600}
+.tag{left:.75rem;background:rgba(255,255,255,.88);color:#3a1a44}
+.pill{right:.75rem}
+.pill.ok{background:#d6f1e1;color:#0b5a2d}
+.pill.low{background:#fdebc8;color:#7a4a00}
+.pill.off{background:#e9e2ea;color:#4a3d50}
+.card-body{display:flex;flex-direction:column;gap:.75rem;flex:1;padding:1.1rem 1.1rem 1.25rem}
+.card h3{font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
+.desc{color:var(--muted);font-size:.9375rem}
+.price{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:0;margin-top:auto}
+.price div{min-width:0}
+.price dt{font-size:.8125rem;color:var(--muted)}
+.price dd{margin:0;font:700 1.125rem var(--font-display);font-variant-numeric:tabular-nums}
+.price small{font:400 .8125rem var(--font-body);color:var(--muted)}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.stepper .qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:var(--bg)}
+.stepper button.step{display:grid;place-items:center;width:2.75rem;height:2.75rem;border:0;background:none;color:var(--ink);font:600 1.4rem/1 var(--font-body);cursor:pointer;border-radius:50%}
+.stepper button.step[disabled]{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:2rem;text-align:center;font:700 1rem var(--font-display);font-variant-numeric:tabular-nums}
+.stepper .in{color:var(--muted);font-size:.875rem}
+.empty{padding:2rem 1rem;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:1.25rem}
+
+/* rental teaser on the landing page */
+.rentband{background:var(--band);color:var(--band-fg)}
+.rent-grid{display:grid;gap:2rem;align-items:center}
+.rentband h2{font-size:clamp(2rem,5.5vw,3.1rem);font-weight:700}
+.rentband p{margin-top:.9rem;color:var(--band-muted);max-width:34rem}
+.rentband .cta-row{margin-top:1.5rem}
+.checks{display:grid;gap:.9rem;margin:0;padding:0;list-style:none}
+.checks li{display:flex;align-items:center;gap:.8rem;font-weight:500}
+.checks svg{flex:none;width:1.75rem;height:1.75rem;padding:.35rem;border-radius:50%;background:var(--accent);color:var(--accent-ink)}
+@media (min-width:52rem){.rent-grid{grid-template-columns:1.2fr .8fr;gap:3rem}}
+
+.how{background:var(--surface-2)}
+.steps{display:grid;gap:1.25rem;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:flex;gap:1rem;align-items:flex-start;counter-increment:s}
+.steps li::before{content:counter(s);flex:none;display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 1.1rem var(--font-display)}
+.steps b{display:block;font:700 1.125rem var(--font-display)}
+.steps p{color:var(--muted);font-size:.9375rem}
+@media (min-width:56rem){.steps{grid-template-columns:repeat(5,minmax(0,1fr));gap:1.5rem}.steps li{flex-direction:column;gap:.9rem}}
+
+.faq{display:grid;gap:.75rem;max-width:48rem}
+details{background:var(--surface);border:1px solid var(--line);border-radius:1rem}
+summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;list-style:none;cursor:pointer;padding:1rem 1.25rem;min-height:3.5rem;font-weight:600}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:none;font:500 1.5rem/1 var(--font-body);color:var(--accent)}
+details[open] summary::after{content:"\2212"}
+details p{padding:0 1.25rem 1.1rem;color:var(--muted)}
+
+footer{background:var(--band);color:var(--band-fg);padding-block:3rem}
+.foot{display:grid;gap:2rem}
+footer p,footer a{font-size:.9375rem;color:var(--band-muted)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--band-fg);text-decoration:underline}
+footer a.logo-chip{color:inherit}
+footer h3{font-size:1rem;margin-bottom:.75rem;color:var(--band-fg);letter-spacing:0}
+footer .col{display:grid;gap:.45rem;align-content:start;min-width:0;overflow-wrap:anywhere}
+.fine{margin-top:2rem;padding-top:1.25rem;border-top:1px solid color-mix(in srgb,var(--band-fg) 18%,transparent);font-size:.8125rem}
+@media (min-width:40rem){.foot{grid-template-columns:1.3fr 1fr 1.2fr}}
+@media (max-width:51.99rem){body.has-bar footer{padding-bottom:7.5rem}}
+
+.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:15;padding:.75rem var(--gutter-r) max(.75rem,env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--bg);border-top:1px solid var(--line)}
+@media (min-width:52rem){.cartbar{display:none!important}}
+
+dialog{width:100%;max-width:100%;max-height:92dvh;margin:auto 0 0;padding:0;border:0;border-radius:1.5rem 1.5rem 0 0;background:var(--surface);color:var(--ink);overflow:auto;overscroll-behavior:contain}
+dialog::backdrop{background:rgba(20,8,26,.62)}
+@media (min-width:40rem){dialog{margin:auto;max-width:36rem;border-radius:1.5rem}}
+.sheet{position:relative;padding:1.5rem var(--gutter-r) max(1.5rem,env(safe-area-inset-bottom,0px)) var(--gutter-l)}
+.x{position:absolute;right:max(.75rem,env(safe-area-inset-right,0px));top:.75rem;display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:50%;border:0;background:var(--surface-2);color:var(--ink);cursor:pointer}
+.sheet h2{font-size:1.6rem;font-weight:700;padding-right:3rem}
+.sheet h3{font-size:1.05rem;font-weight:700;margin:0}
+.sheet .sub{margin-top:.4rem;color:var(--muted);font-size:.9375rem}
+form{display:grid;gap:1rem;margin-top:1.25rem}
+.fieldset{display:grid;gap:1rem}
+.items{display:grid;gap:.75rem;margin:0;padding:0;list-style:none}
+.items li{display:grid;gap:.5rem;padding:.9rem;border:1px solid var(--line);border-radius:1rem;background:var(--bg)}
+.items .nm{display:flex;justify-content:space-between;gap:.75rem;font-weight:600}
+.items .meta{color:var(--muted);font-size:.875rem;font-variant-numeric:tabular-nums}
+.row{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr))}
+label{display:grid;gap:.35rem;min-width:0;font-size:.875rem;font-weight:600}
+input,textarea{width:100%;min-width:0;max-width:100%;min-height:3rem;padding:.7rem .85rem;border:1.5px solid var(--line);border-radius:.8rem;background:var(--bg);color:var(--ink);font:400 1rem var(--font-body)}
+input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
+.sum{display:grid;gap:.4rem;padding:1rem;border-radius:1rem;background:var(--surface-2);font-size:.9375rem}
+.sum div{display:flex;justify-content:space-between;gap:1rem;font-variant-numeric:tabular-nums}
+.sum .total{margin-top:.4rem;padding-top:.6rem;border-top:1px solid var(--line);font:700 1.1rem var(--font-display)}
+.sum small{color:var(--muted);font-size:.8125rem}
+.err{color:var(--danger);font-weight:600;font-size:.9375rem}
+.done{display:grid;gap:1rem;margin-top:1.25rem}
+.ref{display:inline-block;justify-self:start;padding:.25rem .8rem;border-radius:999px;background:var(--accent-soft);color:var(--ink);font:700 1rem var(--font-display);letter-spacing:.02em}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sway{animation:none}.btn{transition:none}}
+</style>
+
+<script type="application/json" id="inventory">
+{
+  "settings": {
+    "whatsapp": "",
+    "instagram": "Aregbesola_JummyMira",
+    "email": "hello@beadsbyjummymira.com",
+    "paymentNote": "",
+    "blockDays": 3,
+    "updated": "2026-10-31"
+  },
+  "sale": [
+    {"id":"s1","cat":"waist","tag":"Waist beads","name":"Black & Gold Waist Beads","price":6500,"stock":8,"desc":"Onyx-black beads with gold spacers, strung for the waist.","kind":"waist","pat":["ink","ink","gold:.7"],"photo":""},
+    {"id":"s2","cat":"necklace","tag":"Necklaces","name":"Pearl Beaded Necklace","price":9000,"stock":5,"desc":"A soft pearl strand with gold accent beads.","kind":"necklace","pat":["pearl","pearl","pearl","pearl","pearl","pearl","gold:1.15"],"photo":""},
+    {"id":"s3","cat":"bracelet","tag":"Bracelets","name":"Gold & Black Bracelet","price":4500,"stock":10,"desc":"Stacked strands in gold and onyx for a clean finish.","kind":"bracelet","pat":["gold","ink","gold","gold","ink"],"photo":""},
+    {"id":"s4","cat":"waist","tag":"Waist beads","name":"Coral Waist Beads","price":6000,"stock":6,"desc":"Warm coral beads broken up with small gold rings.","kind":"waist","pat":["coral","coral","coral","gold:.7"],"photo":""},
+    {"id":"s5","cat":"necklace","tag":"Necklaces","name":"Magenta Statement Necklace","price":10000,"stock":3,"desc":"Bold magenta beads with gold, made to sit at the collarbone.","kind":"necklace","pat":["mag","mag","gold:.8","mag","mag","gold:.8"],"photo":""},
+    {"id":"s6","cat":"bracelet","tag":"Bracelets","name":"Beaded Anklet","price":3500,"stock":12,"desc":"A light pearl and gold anklet for sandals and the beach.","kind":"bracelet","pat":["pearl","gold:.8","pearl","pearl","coral:.9"],"photo":""},
+    {"id":"s7","cat":"set","tag":"Sets","name":"Pearl & Gold Bridal Set","price":22000,"stock":2,"desc":"Matching necklace and bracelet in pearl and gold.","kind":"set","pat":["pearl","pearl","pearl","gold:1.1"],"photo":""},
+    {"id":"s8","cat":"waist","tag":"Waist beads","name":"Blush Pink Waist Beads","price":6000,"stock":4,"desc":"Soft blush beads with pearl accents.","kind":"waist","pat":["blush","blush","pearl:.8","blush"],"photo":""},
+    {"id":"s9","cat":"necklace","tag":"Necklaces","name":"Gold Drop Bead Necklace","price":8500,"stock":0,"desc":"Gold beads in a graduated drop.","kind":"necklace","pat":["gold","gold","gold:1.2","gold","gold"],"photo":""},
+    {"id":"s10","cat":"set","tag":"Sets","name":"Magenta & Gold Everyday Set","price":14000,"stock":3,"desc":"Waist beads and bracelet in a matching colour story.","kind":"set","pat":["mag","gold:.8","mag","mag"],"photo":""}
+  ],
+  "rent": [
+    {"id":"r1","cat":"waist","tag":"Waist beads","name":"Black & Gold Waist Bead","price":5000,"deposit":15000,"stock":3,"backOn":"","desc":"Onyx-black beads with gold spacers, strung for the waist.","kind":"waist","pat":["ink","ink","gold:.7"],"photo":""},
+    {"id":"r2","cat":"necklace","tag":"Necklaces","name":"Pearl Necklace","price":7000,"deposit":20000,"stock":2,"backOn":"","desc":"A soft pearl strand with gold accent beads.","kind":"necklace","pat":["pearl","pearl","pearl","pearl","pearl","pearl","gold:1.15"],"photo":""},
+    {"id":"r3","cat":"bracelet","tag":"Bracelets","name":"Gold & Black Bracelet","price":4000,"deposit":10000,"stock":4,"backOn":"","desc":"Stacked strands in gold and onyx for a clean finish.","kind":"bracelet","pat":["gold","ink","gold","gold","ink"],"photo":""},
+    {"id":"r4","cat":"waist","tag":"Waist beads","name":"Coral & Gold Waist Bead","price":5500,"deposit":15000,"stock":0,"backOn":"2026-11-08","desc":"Warm coral beads broken up with small gold rings.","kind":"waist","pat":["coral","coral","coral","gold:.7"],"photo":""},
+    {"id":"r5","cat":"necklace","tag":"Necklaces","name":"Magenta Statement Necklace","price":8000,"deposit":20000,"stock":1,"backOn":"","desc":"Bold magenta beads with gold, made to sit at the collarbone.","kind":"necklace","pat":["mag","mag","gold:.8","mag","mag","gold:.8"],"photo":""},
+    {"id":"r6","cat":"set","tag":"Sets","name":"Pearl & Gold Bridal Set","price":12000,"deposit":35000,"stock":1,"backOn":"","desc":"Matching necklace and bracelet in pearl and gold.","kind":"set","pat":["pearl","pearl","pearl","gold:1.1"],"photo":""}
+  ]
+}
+</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="beadDefs"></defs></svg>
+
+<div class="top"><div class="wrap">Handmade beads to buy or rent. Fast delivery in selected locations.</div></div>
+
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbMAAABBCAYAAABbwEohAAAXz0lEQVR4nO2dL3RdxfbHP3m8IPJEEBcRRBCtSEUQQeSJIFoRRBCpKKIVqWhFEUEEAQJEK6h4FSCoKKIVRFBBBBVEUEEEEY14EUQ0gggiiHgRRJDf79ef2Pu7Zs6cuTchSdvc9fZnrbvunzPnnDlzzuw9e8/ecwc6nc4IQRAEQdDH/O1lVyAIgiAIjksosyAIgqDvCWUWBEEQ9D2hzIIgCIK+J5RZEARB0PeEMguCIAj6nlBmQRAEQd8TyiwIgiDoe0KZBUEQBH1PKLMgCIKg7wllFgRBEPQ9ocyCIAiCvieUWRAEQdD3hDILgiAI+p5QZkEQBEHfE8osCIIg6HtCmbXZLl47wB4wCAxlv2n7MLDrn8eBEf8MMO37DAOTL+wKeqN6X8Lqp+8zpHofl12svQaz40NqG73OA/v+Gvf9njfbwATpnk3QbBPd4/NZed27IWAuKz9Geh4m/T043XRo9u0d4AzNfhv0IX9/2RU4hUyRBPGg/yaBu4cJwSmSQsvLDgFrvo86SwfY8BdYp3mZqNN+mf12CfgUWOH4CmUfu+YRrD1GsbbZB7aAn4H3st/2s/32y4M9J3awAcYwsOm/3cTa4ItD7D8KfIC1o65z7+SrGTwHpLAmsWcx5wrw+MVWJzgpQpnV2caEXClcJYCl1DaLbcPAV8A6cBd4hAm7kWz7yxZ6Y1jd54HLmEUk5mgquaMw7O+r2W/5tU9iCuOW12Of1K6DPH+GMKW6iykl3Y8zf+EYY9nnET+eRvgvwroMjs6Qv09Xtn0DvPEC6xKcIOFmbLOCWVHDmHD/DXjmrz/9/Qfg39nv2nYfuIEptGd+vNzF9iKE9UGsYR35c5qKDGD5BI6/iSmIET/+r1jb/A784WUuY8J/i6ZFNszzZ9zrpwHJqP9+xeuz3mPfdd/non+Xyyp3VwWnm6mXXYHg+RDKrM0MNo+yDzwA3gTeAq4Dt4uym779HOZ2Wiy2S6FtYIJwg5fPLskVWnISLpYhTGHsYNf8JnCnUk5u2qHst84JnP8gtvw8cg0OkZSQ7vWrXfZ9C3gNa8OO75/Ps3Rr1+D0oGdsqbLtwxdYj+CECWXWZgUTUKPYKG4CE1qLwCdF2buYcNzwzx9i80E5T/x9hBcjrA9iHKvzG8DVYttJWI6D2HVOZsf7rCgj196Ql93HlNuLsFylQKf83FuY23DCt49glmONS/4+hj0fG1idZeFGAMHpZz17v4D16z1s4HpcF3vwEok5sza7/pKrTNGImtcpy+LbFRX3qCgz4ccZ82P0cmO9CBSBt4114HskJTLNyVgXG6QIP7ABwhIw698V9ac22fTXi1L2WySlKwvxDHavVn17jTXgGsnqBLu3e0QkY7+w4u8d/yxvxGi9eNAvhDJrM4cJ1jWabkFF6OXIRaZAgg1s9P41JvTENmmO5mVHMz7E6q0ghtwaOglFO4q13y5Jya9QF/b5HJOss+et0GYxxbqGKduOf14juR+7zd0pKEjKThaZ2u0yEQ132tnH+uAs1i+X/HeF53cbyASnnHAztlnGhNYwKRJRwRulQF72cuvYiH4YUxbXinLzfoxJfx+lmaemuRe5r3axzrVPCv+/5p8XaObK5Fbhecx9pt8VIXiZNJcFSfGWc3gKyFDIuSIf89ywM9nxx7Pf92nWaTxrF2hGfo56Xde9vaTAdOw90tyljneDZOlNkvLBdF92SDlg0LxvGkjse320bYs0h6ay+3R3F46RhN0PXm7ev/+IuazyHMQfva7T/rvacrJoK33+zV+ynke8Tcaz39TmZPvdID0Tn9O8FwukHMLyPE/8u9JNVJcdklLfxlIWtr3MpB9/tDjmNvC91zk/zk2vU17u4+w6bng75dvH/Fi/FfsO+3nlnpY7exu797KQO97meTvveDuo3e562yqA60fs2VD/2cv2/SVrM01B3CzaVf12yvdV3xvDBrhniuNOFJ/13ARHZKDT6bxsS6Hf+C37fBWzOiSopajK/JWB4vt5rGMuYx1vlBQpN0VyhWju5jHtB/1jUnqAohCns88L2TbNUQ1jUZirmOBdAn4iRXh9hCkXWVd5Ts4MJoCu01Tqk9nxx7yuEoTr/tuG1/dzL7cMvOufJ7zei5iimMSspGFSGH1JJ9uu4+dWpXL+ZHVKkcHhLOMh4Gnl93OY0JRwqnEda8+5LtsvYO2o+ZnPMSthrEv5khXgHUzB3OxR7jrmIRBjXn6X9mCrGxexZ+QPmoE6JXew9r/fo8wupkA+7rL9IXavH2HRwIdtj1vYnOyzHmV2gdexZ+Cm16E2P/s+9myqjUaxdu6F7gfYM3kN+FeP8g+we6O5613smV/BnuvTEPHcl4Qy++vkyuwC9hDKdTEFfFuUlyKbxJTIeZIrahb4rnKOt0lzV5ewjg4m+CT8c3axKDslRM/670tYB/mXb6vl1uRcxTrbGZKC/p266++ffj0z/r5DsrYOUmaar6sJtg9Jgn4Ym9Mb8uNPYG3xmKTwwQTIGb/eOaztVCdZYUMky+wgeikzpW38p7J9w8uAXfcvlTJven32MeFfpkecJKrvDGbpPC8WMQH9R5ftS6R0hprS2ceCq3opgeOyjkWjTmHtXhuMXCANnmr3vxsD2H38mabSv4o9m2U6wD+9PvKejPh3RQEHRyDcjMfje+yh/xNTct0U2RTJxaHO8h1tRSbr4glmQQ2SfPodrGPUFNIwpnTk7pjM9vsVE/Dar5cr4wHJFdrBBE+3OayfvdwmqQNudilbMkL3EfoXft5xTJFfwtpuzn+7iVmTeY7fPT/ez5jb6h42oh7GFNsjTAkuHbJ+vVBi9EVsJJ+zjrXfBKZE3qBpHeF1WsWs2YMUmdJDDloZ5Sr1ZG1Zbt2iM8Wmn+fKAeWuUw8QuoxdzwfUBwu3/H0U6xO5p2IRS4U4KEdvG7uHZXpMyQc0BzpinGQBnaU+tzlKmg44LAr4+jdNRfYG1qbvtPZILkYtJpAHkgVHJJTZ8ciXa6rxjDTafIAphk1svmU2K6cO/iVpHmscE9D7WEfPLaRlzLWSryaibbskAfofmh3sPayTDdA9520L6/B5dNeHvk8p7OTmnKA5J3cYbmFC+Bz1PLTvsOsoc/fAhNFA9soF6B1MgLxPuka5/bq5/v4K46Sw/KVi2yWSMtOcUvlsXMME5gZJyJfsYdf1KtZG3fLe3vNycl2VKJXgoy77g7XXWT/PIm3lKwZ829t+vpIOpmxquVpPsDbR2pc/Zdt0f2vPgPgae27fxyy4miJ66HW8i93/2ko7qyRFVVPcl0kRjmUajrhFc9D2GXV37wTW9+UpyFHfUt/UYCVcjMcglNnx+BDr3G9ic0C3aT+4CtjYxDrSME3r6nV/H/LXB9k2dZK88z/yc90C/lGp03k/1wLNkd4AzbSBc7TzzDRJDU3XiNx+6yTBqpU+tBaj5gAOyx1MKG5gwvZdmvNeGqlfIbWRGCNN/qsu+LEekoIFFNix6ueqCeG/yhIpt7BkBWurr0ltUVoqj0lpH7ex56dELrkZ7BpmKmUeYPdTA6qJShmxjbmh/1nZJhf2HCZ8a7lWb5Pm3KCdfgIpX7CbG3cIu+d7NJ8tHWuTpDBLNrDr0+LPNWUma0zPTa2Oo/SOWF3y9z3s3tTq8hmm/GWZb9IO6//az/8Rdp/KNpESU3CS1naNpdCOQSiz46HAgy3MWvoE6/jlqO87Uj5VuZDt75gF94dv+7HYLrefWMVGuDXXkSIQoTn/8Ja/z/rvM1hnLoX7PibUOjQtR7nztDLK65jSlTW4gQnMw4b2a0FjBb9MYe1XumS+8OspXVD5Qs+QFMci1j6bWHsrGnCCFCl6XJRIf5m2q3SMFL24kJ07Z5UUrSo3aImEnSy92iBhOysziCmhpUo5tfEQdUWTR5suU3dDS3kveX1qLkFF0kLdmv6p8ttrWBs8wZ7JBZqDObC2uoO1k4R97Tnb9POrrcpEfbB79ojubtslf9dgs5vSVn6iBlErpPSOcyQrWf3mRnEMnT9fhUbRqMERCWV2PBR6O+qvccyNtEjb6nmCCYTc1XUBG42+7e/vYRbKO5jVdxYTNhcw98kAZpFpAeOSEWxUWArtDf9tDRstrmACqYwY28IU3A51N8t9THju+DGm/Dh7pLm6w6Bz6xo0OtWcipgnjfZzV5vcMTOYIJj174t+bF3/utdTCuQklNke1o6LtN2EEkhrfm7lK+Z8Svp3hW7CSwrwM+xe14S3rmWbFHk6W5TRfOYY3V3ACv3vYMqsFrWo+6TAmppVKksRTJh3u7bcK6EFCm77vsuVeg5j91l/JzRCfQ1RtZMGGLW5XgVdjHfZrihPtW0tGCNfZHyDlA5wC+vHCnbqFV25V3xW9G1YZscglFmbfCV3hX/neTs5eqC3SLksGq2VboyakNin+bcxk1hH1QoT6kzKx5r1739gFlbZYdawjliO5GdJYcAKYNBakflofcHf72XXVvKtn3cEG8lOYJ1X5WewDioBnM/liSEvK6thkBQJmfMRKVfqDMmSXPDyq1gbjmECMXd9yjLTCw4XoJJHcta25ddU+7uYLZKCr5VRtOiwX0Mv96DOU3t2VkgJ6WCCuLQ4lJf12LfVBhuKpFv249XKSCF+Rfd/BlggRcxOUZ8DG8Xmi1V//JgPsbaoWeHabzj73G1uaZ/kgux2HK1NWlNmemaWSVZ2yWx2nClMMS75S33j86z8AO05yxXfT7IF7Jm7RHBkIjS/jXz/uVCUYhukmUN2nTQa1fZZ0oi9VDZnaYb8Xvd9JkiuiQ7JBadE2Vyp5Me8S9OF8SrmSlknrQkJydqZxzpdnqj5hCQoynw4JRF/S72jvUHzTypHvbzC1yWwlzCLZCHbd4AUtg9pPmMtu8YHmIWrBOz8+tcwgbng1zLg16c5oKMiC/bPyrYLXl+tVlK2i1xxD0kDlB9oWiMXSZat+I2mpa20hzznsHyWyns1jrXD/ey3j0hKRW1dO46sYinxbufK3WJlGL7SAFTmDL3D21U3XaMGYSM001/y8+d0u45h0iCwLPMP7F4sdbmGd2lafZO0c0bfI00tiG6pGq9iz8ovNL0gF7H7q7n0G6T7FPL4iMRyVm12aP9hZP49J3cVaSUPCZ/5oqwshxytkHGeZBHMYEJcx1XHLHOFbmOuwFlSB5jwfcuRvJTBBs2VMFRvoUi7Xb+OWczVpRD0PFcMTHC+S1JeWokD2qtv1EbzuaW76/XM3bClZZiPyCcwV983JJfoYRNteyFh3W2bBhrQHv2P0XTPKoovRwJfq/XLGsiZxwY385jwrYWaXyINIDQgKiP4bpDczvPY4KdkmhSh+Yi6VarACyn62nyt5rtyS6MXEt7bpND+beqpJ3PYc3XDz1ELiFnwc89iirLmVh31fbeou5y1+LRW86klTK9g93mM5LGp/a3Ma759gfZzOYvd+9wrEn/wekzCMmsjATuKPXC5pbZHcyL7LtZxFFmnOZJLdM85K5OQ9ftlrKNdwYSTlrPapD3K3cSsPGiOPvMRbLfR9TxpPmcLs0AGszLqVBqVfoi1xSLJ2tCxd7BgEAUY5IJa4evKRcvbZB8btS5gQuchSfjlicay/M6TBJ3mJVXfZ5jgkEV73PBmuX5+rWw7m5XZ8OuZrZSZpz2YEQ9pzi9dxhRyTrl6R81akfUmBrE2zo/1iPQvDh3svpbWSM0aL63SK5g1I2E7Srt9tFrINPZ8bWMDn1o+oRYF0NJP+Pc5rO3L9jhLUznWEtLfoummrllV/8jON0HTewFty2yO9qomNStxnrY7WV6dXqxi93GM1M9j3uyIxJxZGwUmbGP+dyXbLtMeIUvJbdF0LZWKTD7zaVJkoVC00yIpCvI7rLP+CxOc+fJDb5CE6v1K/aVoynyfZ1hn+dKvawQLtc473Fx2Lo0mb2LWxhrt0a5ceko2heRelPLfzcoIubXuYG7ER162XKVCIfZyta4V1yUFv0savR+XPbonr+au1H3qeWJP6a7IwBTO99i9/Zm24Aabs/wRU3RPaSsyfF9FmI5jCqg81gzp+fqd+godz7Bn7DzpT2ZLvvF9O/65pui/IyXZ61lYpD7vqmdJrmWVuV+5BrA2kDX4jPrKKvqzXLBntlRk+DU89XKlIgNzCT/LytyvlFGEYh4tXLPyDjOoUqTyJgcnxgcHEMqszRhpmRn88zzpAc+Zx3zl3/jrWqXMJySXiiKyyg7+le837+9yo4yQ5h/Eb17mZ9pJwDr3NPV8oadYJ37q+5dulPvYCFNLc4Fdv6zR2eL6tBqDFlCVNZm7ZhVJV7pafiUJ/nv+Pb9OKf1JkmBYoemKycsrUu249FJmpRtIq4t04wH1kfYdf/WK/jyPPVMHrYzxI/Ww95yvDtj+hHZKSI1/c/BqIqsk78YG7ahYDdgU+CRruuY6zPmG7qvGlOV6rad4UHsetozmagepu4FzznX5/SppOSuIFfuPRbgZ22jOTMELn9I74qwX+dqNkFxY+9TnU0rkurmGCfzDchUTpNOk6LHD8hirN/QOL85dnZrvK1c22MAU4CbWYX/ArLleUVsb2Byd1nXMk0k195a7f+SS63g9jisQtMZkrd0GSItJr5EiKaewa5rG7pncuGBtcd+v6zOacyOXsXv7NcnylLX8Sbb/NZrh21PY/b1GSrCewCwwCVatMjKOWZA3SEEWW6SQ9xXSXNo90pJmsp40oNojDcomsPuaR+OtkvK0yqTg3Nq74ufeIq2fidftqV/PGM1/AV/Mruupt80k9qze8PrP+XXK1ThNGggpfWHXzztLWtw7X1Zsw8svklbE/xzzBlzy/eVG/ZLmnG/Hyy77MbT6fm69/0L6t4eLpFQDLag9RqzNeGRCmbUpw+81B6RoxW3sob6JCadrpFBfCZpVUue7hHX4/CF/RBqNLmNuSU1Mf02zA0gwfEwaccql+SXWGTUfpYVu5fbTnMoI5tqawDr1XT+vOv6Mv257HWa8jloc+U+/th3SP/NKsC2QQrshCRAFmUxn255hCuGMv86TRtsPMcUkxTXtx5HlI0GsxVjlehvAhMgtmivlH5Vtui/Mq/mSGa/PDu0V+yENhHZJoeJK9JYb7iEp+Vb7TPvvuTt3gu7JzF9gglZW9AqpDRSN+ynWNnOk1IZOtn3a91kn/Xms7l+ueC953c6QErn1jA/R/NNXPX+7tCMoNSDQ9SgCcZzmH2Xmq8toYCDlm1u7GkipflLo+T3J2xma6yHKC6H57gl/n/H6jNFMncnnKZWj95iUxzhFShqf8OOUFrwiS4ew9tf+c9Rz6IJDEMosOG3ICpBbcoO0fNVjkmB6RlLes6Q/zTzMyHYHE0Ry98pKfocUrVdawnexSLroL70ZJi10vUszEOMK8eelwXMi5syC04aWS1K+2j7NvJ4d0vyOlixSsM5hFJlSE7Q+4n2Su/cnus+ZLXX5PWgiV11tWbWD5paC4MiEZRacNrS8j9yVq6S/tJfCkttqAFNEWl6ow8FuxtwFt48F8By0j+bloq8cTC3yEpr/uRcEJ05YZsFpQ3NzWnxVE+YKFlB4ufKwzpPchocJb86jx/Ik925s0v1vUYLD0+tvaILg2IQyC04bWjnkMaZEtAL+VzT/yfc26R+o8zUnD2Lb95NCq6UwiE3S6ifHDSz5b6e2AHYQnBihzILTxjimODT/dQYLaZ4h5WXJrZhHOx41JH+J9jJPS5hL7Cwpwu2gPKjAqM1bKoWjtrhvEJwIocyC04Zyf5QOUUssfpcU+q1w9w0Ol+yqFIrcivsAm397B1NiF2lbeVpcOOjN69hSZe9gS2m9Tgqtj6WagudGKLPgtKElrBRhuIgpmnP+eg2bP8tXopj198NYT1rvcs/30/qQ+aLIHSxfSSus6I8XY8mhg5kiRaJqAYJRUt5dEDwXIpoxCIIg6HvCMguCIAj6nlBmQRAEQd8TyiwIgiDoe0KZBUEQBH1PKLMgCIKg7wllFgRBEPQ9ocyCIAiCvieUWRAEQdD3hDILgiAI+p5QZkEQBEHfE8osCIIg6HtCmQVBEAR9TyizIAiCoO8JZRYEQRD0PX/H/sMJ4P+A//V3ff9bvMd7H70DPKPJK779Ff8+6N8H/P1v/pvYB/4H6xtk+4H1j268cogyQRA8J/4fAeH1XrphJKkAAAAASUVORK5CYII=" alt="Beads by Jummymira"></a>
+      <div class="actions">
+        <button class="cart-btn" id="cartBtn" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+          <span class="cart-label" id="cartLabel">Your order</span><span class="count" id="cartCount">0</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+      <nav class="nav-links" id="navLinks" aria-label="Main">
+        <a href="#home" data-nav="home">Home</a>
+        <a href="#shop" data-nav="shop">Beads for sale</a>
+        <a href="#rent" data-nav="rent">Rent beads</a>
+        <a href="#faq" data-nav="faq">FAQ</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<div class="view" id="v-home">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Beads made by hand.</h1>
+        <p class="lede">Waist beads, necklaces, bracelets and sets, made one at a time. Buy a piece to keep, or rent one for the wedding, the shoot or the weekend.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#sale-preview">Shop beads for sale</a>
+          <a class="btn ghost" href="#rent">Rent beads</a>
+        </div>
+        <ul class="facts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="factSale">Beads for sale</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Orders confirmed on WhatsApp</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Delivery nationwide</li>
+        </ul>
+      </div>
+      <div class="panel" aria-hidden="true">
+        <svg class="drape" id="drape" viewBox="0 0 420 525" preserveAspectRatio="xMidYMid slice"></svg>
+        <p>Made by hands,<br>worn by hearts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sale-preview">
+    <div class="wrap">
+      <div class="head">
+        <h2>Beads for sale</h2>
+        <p>A few of our pieces that are ready to ship. Add what you like and send us your order.</p>
+      </div>
+      <div class="grid" id="gridPreview"></div>
+      <div class="more"><a class="btn primary" id="seeMoreSale" href="#shop">See more beads for sale</a></div>
+    </div>
+  </section>
+
+  <section class="rentband" id="rent-intro">
+    <div class="wrap rent-grid">
+      <div>
+        <h2>Need them for one occasion? Rent them.</h2>
+        <p>Pick a piece, choose your dates and we deliver. Wear it, send it back, and your deposit comes back after inspection. Pieces are priced per 3 days.</p>
+        <div class="cta-row"><a class="btn light" id="showMoreRent" href="#rent">Show more</a></div>
+      </div>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="factRent">Rent from a small fee</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Refundable security deposit</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Courier pickup for returns</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="head"><h2>Questions</h2></div>
+      <div class="faq">
+        <details><summary>How do I place an order?</summary><p>Add the pieces you want to your order, fill in your delivery details, and the order sheet gives you a message to send to us on WhatsApp. Your order is confirmed once we reply.</p></details>
+        <details><summary>Can I buy and rent in the same order?</summary><p>Buying and renting are two separate orders. Place one for the beads you want to keep and another for the ones you want to rent.</p></details>
+        <details><summary>Do you deliver outside Lagos?</summary><p>Yes. Nationwide delivery can be offered, with cost and timing depending on destination. We confirm the delivery cost when we reply to your order.</p></details>
+        <details><summary>How long does delivery take?</summary><p>Same-day or next-day delivery can be available in selected locations. Other locations depend on the courier.</p></details>
+        <details><summary>How does renting work?</summary><p>See the rental page for pricing, deposits, returns and late fees.</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ SHOP ============ -->
+<div class="view" id="v-shop" hidden>
+  <div class="wrap">
+    <div class="pagehead">
+      <a class="crumb" href="#home">&larr; Back to home</a>
+      <h1>Beads for sale</h1>
+      <p id="saleLine">Every piece is handmade and ready to ship.</p>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="wrap">
+      <div class="toolbar" role="group" aria-label="Filter beads for sale" data-mode="sale">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-f="waist" aria-pressed="false">Waist beads</button>
+        <button class="chip" type="button" data-f="necklace" aria-pressed="false">Necklaces</button>
+        <button class="chip" type="button" data-f="bracelet" aria-pressed="false">Bracelets</button>
+        <button class="chip" type="button" data-f="set" aria-pressed="false">Sets</button>
+        <button class="chip toggle" type="button" data-only aria-pressed="false">In stock only</button>
+      </div>
+      <p class="shown" id="shownSale" aria-live="polite"></p>
+      <div class="grid" id="gridSale"></div>
+      <div class="empty" id="emptySale" hidden>Nothing matches that filter right now. Try another category or show everything.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ RENT ============ -->
+<div class="view" id="v-rent" hidden>
+  <div class="wrap">
+    <div class="pagehead">
+      <a class="crumb" href="#home">&larr; Back to home</a>
+      <h1>Rent beads</h1>
+      <p id="rentLine">Choose a piece, pick your dates, and we handle delivery and the return pickup.</p>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="wrap">
+      <div class="toolbar" role="group" aria-label="Filter beads for rent" data-mode="rent">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-f="waist" aria-pressed="false">Waist beads</button>
+        <button class="chip" type="button" data-f="necklace" aria-pressed="false">Necklaces</button>
+        <button class="chip" type="button" data-f="bracelet" aria-pressed="false">Bracelets</button>
+        <button class="chip" type="button" data-f="set" aria-pressed="false">Sets</button>
+        <button class="chip toggle" type="button" data-only aria-pressed="false">Available now only</button>
+      </div>
+      <p class="shown" id="shownRent" aria-live="polite"></p>
+      <div class="grid" id="gridRent"></div>
+      <div class="empty" id="emptyRent" hidden>Nothing matches that filter right now. Try another category or show everything.</div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <div class="head"><h2>How renting works</h2><p>Five steps from browsing to getting your deposit back.</p></div>
+      <ol class="steps">
+        <li><div><b>Browse</b><p>Choose what is available.</p></div></li>
+        <li><div><b>Order</b><p>Add pieces, pick your dates and send the order to us on WhatsApp.</p></div></li>
+        <li><div><b>We deliver</b><p>We confirm your order and your jewellery arrives.</p></div></li>
+        <li><div><b>Wear and enjoy</b><p>Make your moment sparkle.</p></div></li>
+        <li><div><b>Return</b><p>Courier pickup, then your deposit is refunded after inspection.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="head"><h2>Before you rent</h2></div>
+      <div class="faq">
+        <details><summary>How is the rental price worked out?</summary><p>Each piece is priced per 3 days. A longer rental is charged in extra 3-day blocks. The order sheet shows the total before you send anything.</p></details>
+        <details><summary>Is the security deposit refundable?</summary><p>Yes. It is refunded after the jewellery is returned and inspected, provided it is in the agreed condition.</p></details>
+        <details><summary>What if I return it late?</summary><p>A late-return fee may apply according to your rental agreement.</p></details>
+        <details><summary>What if the jewellery is damaged or lost?</summary><p>Repair or replacement costs may be deducted from the security deposit according to the rental terms.</p></details>
+        <details><summary>Can I rent more than one piece?</summary><p>Yes. Add as many available pieces as you like to one rental order. They share the same delivery and return dates.</p></details>
+        <details><summary>Do you deliver outside Lagos?</summary><p>Yes. Nationwide delivery can be offered, with cost and timing depending on destination.</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="data:image/png;base64,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" alt="Beads by Jummymira"></a>
+        <p>Made by hands, worn by hearts. Handcrafted beads for your special moments.</p>
+      </div>
+      <div class="col">
+        <h3>Explore</h3>
+        <a href="#shop">Beads for sale</a>
+        <a href="#rent">Rent beads</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="col" id="contactCol"><h3>Contact</h3></div>
+    </div>
+    <p class="fine">&copy; 2026 Beads by Jummymira</p>
+  </div>
+</footer>
+
+<div class="cartbar" id="cartBar" hidden>
+  <button class="btn primary block" type="button" id="cartBarBtn">View your order</button>
+</div>
+
+<dialog id="orderDlg" aria-labelledby="orderTitle">
+  <div class="sheet">
+    <button class="x" type="button" id="closeOrder" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <h2 id="orderTitle">Your order</h2>
+    <p class="sub" id="orderSub"></p>
+
+    <form id="orderForm" novalidate>
+      <div class="fieldset">
+        <h3>Pieces</h3>
+        <ul class="items" id="items"></ul>
+        <div class="empty" id="itemsEmpty" hidden>Your order is empty. Close this and add a piece.</div>
+      </div>
+
+      <div class="fieldset">
+        <h3 id="deliveryHead">Delivery</h3>
+        <div class="row" id="dateRow">
+          <label for="fFrom">Delivery date<input id="fFrom" name="from" type="date"></label>
+          <label for="fTo">Return date<input id="fTo" name="to" type="date"></label>
+        </div>
+        <label for="fAddr">Delivery address<input id="fAddr" name="addr" autocomplete="street-address" required placeholder="Full address, city, state"></label>
+      </div>
+
+      <div class="fieldset">
+        <h3>Your details</h3>
+        <label for="fName">Full name<input id="fName" name="name" autocomplete="name" required placeholder="Your full name"></label>
+        <div class="row">
+          <label for="fPhone">WhatsApp or phone<input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+234..."></label>
+          <label for="fEmail">Email<input id="fEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        </div>
+        <label for="fNote">Anything we should know? (optional)<textarea id="fNote" name="note" placeholder="Event date, sizing, preferred delivery time"></textarea></label>
+      </div>
+
+      <div class="sum" aria-live="polite">
+        <div><span id="sLine1">Beads</span><span id="sVal1">&mdash;</span></div>
+        <div id="sRow2"><span>Refundable deposit</span><span id="sVal2">&#8358;0</span></div>
+        <div class="total"><span>Total</span><span id="sTotal">&mdash;</span></div>
+        <small id="sNote"></small>
+      </div>
+      <p class="err" id="err" role="alert" hidden></p>
+      <button class="btn primary block" type="submit" id="submitBtn">Prepare my order</button>
+    </form>
+
+    <div class="done" id="done" hidden>
+      <span class="ref" id="refCode"></span>
+      <p><b>Your order is ready to send.</b> It is not placed until you send it to us. We confirm availability and the next steps when we reply.</p>
+      <label for="summaryText" class="sr">Order message</label>
+      <textarea id="summaryText" readonly style="min-height:11rem"></textarea>
+      <a class="btn primary block" id="waLink" href="#" hidden>Send on WhatsApp</a>
+      <button class="btn primary block" type="button" id="copyBtn">Copy order message</button>
+      <a class="btn ghost block" id="igLink" href="#" hidden>Message us on Instagram</a>
+      <p class="sub" id="copyNote" aria-live="polite"></p>
+      <p class="sub" id="payNote" hidden></p>
+      <button class="btn ghost block" type="button" id="editBtn">Change my order</button>
+      <button class="link-btn" type="button" id="clearBtn">I have sent it. Clear my order.</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* ---------- Data ---------- */
+var DATA = {settings:{}, sale:[], rent:[]};
+try { DATA = JSON.parse(document.getElementById('inventory').textContent); } catch (e) {}
+var S = DATA.settings || {};
+var BLOCK = Number(S.blockDays) || 3;
+var LIST = {sale: DATA.sale || [], rent: DATA.rent || []};
+
+/* ---------- Bead drawing ---------- */
+var NS = 'http://www.w3.org/2000/svg';
+var COLORS = {gold:'#d9a93a', ink:'#241a2b', mag:'#c71be8', pearl:'#f3ebf2', coral:'#e8624c', blush:'#f3a6c4'};
+function node(n, a){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
+function rgb(h){ return [1,3,5].map(function(i){ return parseInt(h.slice(i,i+2),16); }); }
+function mix(c, t, amt){ var a = rgb(c); return '#' + a.map(function(v,i){ return Math.round(v + (t[i]-v)*amt).toString(16).padStart(2,'0'); }).join(''); }
+(function makeDefs(){
+  var defs = document.getElementById('beadDefs');
+  Object.keys(COLORS).forEach(function(name){
+    var c = COLORS[name];
+    var g = node('radialGradient', {id:'b-'+name, cx:'.35', cy:'.3', r:'.8'});
+    [[0, mix(c,[255,255,255],.75)],[.3, mix(c,[255,255,255],.2)],[.65, c],[1, mix(c,[0,0,0],.5)]].forEach(function(s){
+      g.appendChild(node('stop', {offset:s[0], 'stop-color':s[1]}));
+    });
+    defs.appendChild(g);
+  });
+})();
+function strand(svg, d, o){
+  var r = o.r, thread = o.thread || 'rgba(60,30,70,.35)';
+  var g = node('g', o.cls ? {'class':o.cls, style:'--d:'+(o.delay||0)+'s'} : {});
+  var path = node('path', {d:d, fill:'none', stroke:thread, 'stroke-width':Math.max(.8, r*.12)});
+  g.appendChild(path);
+  svg.appendChild(g);
+  var len = path.getTotalLength();
+  var step = 2 * r * 0.97;
+  var count = Math.floor((len - r) / step);
+  for (var i = 0; i < count; i++){
+    var bits = o.pat[i % o.pat.length].split(':');
+    var rr = r * (bits[1] ? parseFloat(bits[1]) : 1);
+    var p = path.getPointAtLength(r + i * step);
+    g.appendChild(node('circle', {cx:(p.x+r*.14).toFixed(2), cy:(p.y+r*.22).toFixed(2), r:rr.toFixed(2), fill:'rgba(20,6,26,.22)'}));
+    g.appendChild(node('circle', {cx:p.x.toFixed(2), cy:p.y.toFixed(2), r:rr.toFixed(2), fill:'url(#b-'+bits[0]+')'}));
+  }
+}
+function ring(cx, cy, rx, ry){
+  return 'M'+(cx-rx)+' '+cy+' a'+rx+' '+ry+' 0 1 0 '+(rx*2)+' 0 a'+rx+' '+ry+' 0 1 0 '+(-rx*2)+' 0';
+}
+function drawHero(){
+  var svg = document.getElementById('drape');
+  var thread = 'rgba(255,255,255,.3)';
+  strand(svg, 'M-30 -10 C 10 330, 410 330, 450 -10', {r:9, pat:['gold','gold','mag','gold','gold','pearl','gold','gold','coral'], thread:thread, cls:'sway', delay:0});
+  strand(svg, 'M10 -20 C 60 250, 360 250, 410 -20', {r:7, pat:['coral','gold','coral','coral','pearl','coral'], thread:thread, cls:'sway', delay:-2});
+  strand(svg, 'M60 -20 C 110 170, 310 170, 360 -20', {r:5.5, pat:['pearl','pearl','pearl','gold:1.2','pearl','pearl'], thread:thread, cls:'sway', delay:-4});
+  strand(svg, ring(210, 372, 172, 44), {r:7, pat:['mag','mag','gold:.75','mag','mag','gold:.75','pearl:.8'], thread:thread});
+}
+function drawPiece(svg, kind, pat){
+  var thread = 'rgba(60,30,70,.4)';
+  if (kind === 'waist'){
+    strand(svg, ring(100, 74, 78, 31), {r:5.6, pat:pat, thread:thread});
+    strand(svg, ring(100, 74, 58, 22), {r:4.2, pat:pat, thread:thread});
+  } else if (kind === 'necklace'){
+    strand(svg, 'M30 16 C 40 138, 160 138, 170 16', {r:5.2, pat:pat, thread:thread});
+    strand(svg, 'M44 14 C 52 108, 148 108, 156 14', {r:3.6, pat:pat.slice().reverse(), thread:thread});
+  } else if (kind === 'bracelet'){
+    strand(svg, ring(100, 76, 46, 46), {r:5.6, pat:pat, thread:thread});
+    strand(svg, ring(100, 76, 33, 33), {r:4.2, pat:pat.slice().reverse(), thread:thread});
+  } else {
+    strand(svg, 'M36 12 C 46 92, 154 92, 164 12', {r:4.4, pat:pat, thread:thread});
+    strand(svg, ring(100, 112, 30, 24), {r:4.2, pat:pat, thread:thread});
+  }
+}
+
+/* ---------- Helpers ---------- */
+function naira(n){ return '₦' + Number(n).toLocaleString('en-NG'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ymd(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function parse(s){ var a = s.split('-'); return new Date(+a[0], +a[1]-1, +a[2]); }
+function fmtDate(s){ return parse(s).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}); }
+function fmtShort(s){ return parse(s).toLocaleDateString('en-GB', {day:'numeric', month:'short'}); }
+function byId(mode, id){ return LIST[mode].filter(function(p){ return p.id === id; })[0]; }
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+function el(id){ return document.getElementById(id); }
+
+/* ---------- Carts (one for sale, one for rent) ---------- */
+var cart = {sale:{}, rent:{}};
+(function loadCart(){
+  try {
+    var raw = JSON.parse(store('jm_cart3') || '{}');
+    ['sale','rent'].forEach(function(m){
+      Object.keys(raw[m] || {}).forEach(function(id){
+        var p = byId(m, id), q = Math.floor(raw[m][id]);
+        if (p && q > 0 && p.stock > 0) cart[m][id] = Math.min(q, p.stock);
+      });
+    });
+  } catch (e) { cart = {sale:{}, rent:{}}; }
+})();
+function cartCount(m){ return Object.keys(cart[m]).reduce(function(n,id){ return n + cart[m][id]; }, 0); }
+function setQty(m, id, q){
+  var p = byId(m, id); if (!p) return;
+  q = Math.max(0, Math.min(q, p.stock));
+  if (q === 0) delete cart[m][id]; else cart[m][id] = q;
+  store('jm_cart3', JSON.stringify(cart));
+  onCartChange();
+}
+
+/* ---------- Cards ---------- */
+var view = 'home';
+function curMode(){ return view === 'rent' ? 'rent' : 'sale'; }
+
+function status(p, m){
+  if (p.stock <= 0){
+    if (m === 'rent') return {cls:'off', text: p.backOn ? 'Back ' + fmtShort(p.backOn) : 'Rented out'};
+    return {cls:'off', text:'Sold out'};
+  }
+  if (p.stock <= 3) return {cls:'low', text: p.stock === 1 ? 'Only 1 left' : 'Only ' + p.stock + ' left'};
+  return {cls:'ok', text: m === 'rent' ? 'Available' : 'In stock'};
+}
+function actionsHtml(p, m){
+  var q = cart[m][p.id] || 0, d = ' data-mode="' + m + '" data-id="' + p.id + '"';
+  if (p.stock <= 0) return '<button class="btn primary block" type="button" disabled>' + (m === 'rent' ? 'Not available now' : 'Sold out') + '</button>';
+  if (q === 0) return '<button class="btn primary block" type="button" data-act="add"' + d + '>Add to order</button>';
+  return '<div class="stepper"><div class="qty"><button class="step" type="button" data-act="dec"' + d + ' aria-label="Remove one ' + esc(p.name) + '">&minus;</button>' +
+    '<output aria-live="polite">' + q + '</output>' +
+    '<button class="step" type="button" data-act="inc"' + d + ' aria-label="Add one more ' + esc(p.name) + '"' + (q >= p.stock ? ' disabled' : '') + '>+</button></div>' +
+    '<span class="in">' + (q >= p.stock ? 'All we have' : 'In your order') + '</span></div>';
+}
+function priceHtml(p, m){
+  if (m === 'rent') return '<dl class="price"><div><dt>Rental</dt><dd>' + naira(p.price) + ' <small>/ ' + BLOCK + ' days</small></dd></div>' +
+    '<div><dt>Deposit</dt><dd>' + naira(p.deposit) + ' <small>refundable</small></dd></div></dl>';
+  return '<dl class="price"><div><dt>Price</dt><dd>' + naira(p.price) + '</dd></div></dl>';
+}
+function renderGrid(container, list, m){
+  container.innerHTML = '';
+  list.forEach(function(p){
+    var st = status(p, m);
+    var card = document.createElement('article');
+    card.className = 'card' + (p.stock <= 0 ? ' out' : '');
+    card.dataset.cat = p.cat; card.dataset.mode = m; card.dataset.id = p.id; card.dataset.avail = p.stock > 0 ? '1' : '0';
+    card.innerHTML =
+      '<div class="tile"><span class="tag">' + esc(p.tag) + '</span><span class="pill ' + st.cls + '">' + esc(st.text) + '</span></div>' +
+      '<div class="card-body"><h3>' + esc(p.name) + '</h3><p class="desc">' + esc(p.desc) + '</p>' + priceHtml(p, m) +
+      '<div class="act">' + actionsHtml(p, m) + '</div></div>';
+    var tile = card.querySelector('.tile');
+    container.appendChild(card);
+    if (p.photo){
+      var img = document.createElement('img'); img.src = p.photo; img.alt = p.name; img.loading = 'lazy'; tile.insertBefore(img, tile.firstChild);
+    } else {
+      var svg = node('svg', {viewBox:'0 0 200 150', preserveAspectRatio:'xMidYMid meet', role:'img', 'aria-label':p.name});
+      tile.insertBefore(svg, tile.firstChild);
+      drawPiece(svg, p.kind, p.pat);
+    }
+  });
+}
+function refreshActions(){
+  document.querySelectorAll('.card').forEach(function(c){
+    var m = c.dataset.mode, p = byId(m, c.dataset.id), act = c.querySelector('.act');
+    if (!p || !act) return;
+    var f = act.contains(document.activeElement) ? document.activeElement.dataset.act : null;
+    act.innerHTML = actionsHtml(p, m);
+    if (f){ var b = act.querySelector('[data-act="' + f + '"]:not([disabled])') || act.querySelector('button:not([disabled])'); if (b) b.focus(); }
+  });
+}
+
+/* ---------- Filters ---------- */
+var filters = {sale:{cat:'all', only:false}, rent:{cat:'all', only:false}};
+function applyFilter(m){
+  var grid = el(m === 'sale' ? 'gridSale' : 'gridRent'), shown = 0;
+  grid.querySelectorAll('.card').forEach(function(c){
+    var ok = (filters[m].cat === 'all' || c.dataset.cat === filters[m].cat) && (!filters[m].only || c.dataset.avail === '1');
+    c.hidden = !ok; if (ok) shown++;
+  });
+  el(m === 'sale' ? 'emptySale' : 'emptyRent').hidden = shown !== 0;
+  el(m === 'sale' ? 'shownSale' : 'shownRent').textContent = shown === 0 ? '' : 'Showing ' + shown + ' of ' + LIST[m].length + ' pieces';
+}
+document.querySelectorAll('.toolbar').forEach(function(tb){
+  var m = tb.dataset.mode;
+  tb.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-only')){
+      filters[m].only = !filters[m].only; b.setAttribute('aria-pressed', filters[m].only ? 'true' : 'false');
+    } else if (b.dataset.f){
+      tb.querySelectorAll('[data-f]').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      filters[m].cat = b.dataset.f;
+    }
+    applyFilter(m);
+  });
+});
+
+document.addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act][data-id]'); if (!b) return;
+  var m = b.dataset.mode, id = b.dataset.id, q = cart[m][id] || 0;
+  if (b.dataset.act === 'add' || b.dataset.act === 'inc') setQty(m, id, q + 1);
+  else if (b.dataset.act === 'dec') setQty(m, id, q - 1);
+  else if (b.dataset.act === 'rm') setQty(m, id, 0);
+});
+
+/* ---------- Static copy from data ---------- */
+function renderCopy(){
+  var inStock = LIST.sale.filter(function(p){ return p.stock > 0; });
+  if (inStock.length) el('factSale').textContent = 'Beads from ' + naira(Math.min.apply(null, inStock.map(function(p){ return p.price; })));
+  var avail = LIST.rent.filter(function(p){ return p.stock > 0; });
+  if (avail.length) el('factRent').textContent = 'Rent from ' + naira(Math.min.apply(null, avail.map(function(p){ return p.price; }))) + ' for ' + BLOCK + ' days';
+  el('saleLine').textContent = inStock.length + ' of ' + LIST.sale.length + ' pieces are in stock.' + (S.updated ? ' Updated ' + fmtDate(S.updated) + '.' : '');
+  el('rentLine').textContent = avail.length + ' of ' + LIST.rent.length + ' pieces are available to rent right now. Pick your dates and we handle delivery and the return pickup.';
+  el('seeMoreSale').textContent = LIST.sale.length > 6 ? 'See more beads for sale (' + (LIST.sale.length - 6) + ' more)' : 'See all beads for sale';
+  var col = el('contactCol'), html = '<h3>Contact</h3>', wa = String(S.whatsapp || '').replace(/\D/g,'');
+  if (wa) html += '<p>WhatsApp: +' + esc(wa) + '</p>';
+  if (S.instagram) html += '<p>Instagram: <a href="https://instagram.com/' + encodeURIComponent(S.instagram) + '">@' + esc(S.instagram) + '</a></p>';
+  if (S.email) html += '<p>Email: ' + esc(S.email) + '</p>';
+  col.innerHTML = html;
+}
+
+/* ---------- Router ---------- */
+var VIEWS = ['home','shop','rent'];
+function route(){
+  var h = decodeURIComponent((location.hash || '').slice(1));
+  var target = 'home', anchor = null;
+  if (VIEWS.indexOf(h) > -1) target = h;
+  else if (h && el(h)) anchor = h;
+  var changed = target !== view;
+  view = target;
+  VIEWS.forEach(function(v){ el('v-' + v).hidden = v !== view; });
+  var active = anchor === 'faq' ? 'faq' : view;
+  document.querySelectorAll('#navLinks a').forEach(function(a){
+    if (a.dataset.nav === active) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  el('navLinks').classList.remove('open'); el('menuBtn').setAttribute('aria-expanded', 'false');
+  if (anchor){ var t = el(anchor); if (t) t.scrollIntoView(); }
+  else if (changed || !h) window.scrollTo(0, 0);
+  updateBar();
+}
+window.addEventListener('hashchange', route);
+
+/* ---------- Header, menu, order bar ---------- */
+el('menuBtn').addEventListener('click', function(){
+  var open = el('navLinks').classList.toggle('open');
+  this.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+function updateBar(){
+  var m = curMode(), n = cartCount(m);
+  var word = m === 'rent' ? 'rental' : 'order';
+  el('cartCount').textContent = n;
+  el('cartLabel').textContent = m === 'rent' ? 'Your rental' : 'Your order';
+  el('cartBtn').setAttribute('aria-label', 'Your ' + word + ', ' + n + (n === 1 ? ' piece' : ' pieces'));
+  el('cartBar').hidden = n === 0;
+  document.body.classList.toggle('has-bar', n > 0);
+  el('cartBarBtn').textContent = 'View your ' + word + ' (' + n + (n === 1 ? ' piece)' : ' pieces)');
+}
+function onCartChange(){
+  updateBar(); refreshActions();
+  if (dlg.open){ renderItems(); recalc(); }
+}
+
+/* ---------- Order sheet ---------- */
+var dlg = el('orderDlg'), form = el('orderForm'), done = el('done'), errBox = el('err');
+var fFrom = el('fFrom'), fTo = el('fTo'), quote = null, sheetMode = 'sale';
+
+function cartItems(){ return Object.keys(cart[sheetMode]).map(function(id){ return {p:byId(sheetMode, id), q:cart[sheetMode][id]}; }).filter(function(x){ return x.p; }); }
+
+function renderItems(){
+  var items = cartItems(), rent = sheetMode === 'rent';
+  el('itemsEmpty').hidden = items.length !== 0;
+  el('items').hidden = items.length === 0;
+  el('items').innerHTML = items.map(function(x){
+    var p = x.p, d = ' data-mode="' + sheetMode + '" data-id="' + p.id + '"';
+    return '<li><div class="nm"><span>' + esc(p.name) + '</span><span>' + naira(p.price * x.q) + '</span></div>' +
+      '<div class="meta">' + (rent ? naira(p.price) + ' per ' + BLOCK + ' days, deposit ' + naira(p.deposit) + ' each' : naira(p.price) + ' each') + '</div>' +
+      '<div class="stepper"><div class="qty"><button class="step" type="button" data-act="dec"' + d + ' aria-label="Remove one ' + esc(p.name) + '">&minus;</button><output>' + x.q + '</output>' +
+      '<button class="step" type="button" data-act="inc"' + d + ' aria-label="Add one more ' + esc(p.name) + '"' + (x.q >= p.stock ? ' disabled' : '') + '>+</button></div>' +
+      '<button class="link-btn" type="button" data-act="rm"' + d + '>Remove</button></div></li>';
+  }).join('');
+  el('submitBtn').disabled = items.length === 0;
+}
+
+function recalc(){
+  var items = cartItems(), rent = sheetMode === 'rent';
+  quote = null;
+  if (!rent){
+    var sub = items.reduce(function(n,x){ return n + x.p.price * x.q; }, 0);
+    quote = {sub:sub, total:sub};
+    el('sLine1').textContent = 'Beads'; el('sVal1').textContent = naira(sub);
+    el('sRow2').hidden = true;
+    el('sTotal').textContent = naira(sub);
+    el('sNote').textContent = 'Delivery cost depends on where you are. We confirm it when we reply to your order.';
+    return;
+  }
+  var perBlock = items.reduce(function(n,x){ return n + x.p.price * x.q; }, 0);
+  var dep = items.reduce(function(n,x){ return n + x.p.deposit * x.q; }, 0);
+  var a = fFrom.value, b = fTo.value;
+  el('sRow2').hidden = false;
+  el('sVal2').textContent = naira(dep);
+  el('sNote').textContent = 'The deposit is refunded after the pieces are returned and inspected.';
+  if (!a || !b || parse(b) < parse(a)){
+    el('sLine1').textContent = (a && b) ? 'Return date is before delivery' : 'Choose your dates';
+    el('sVal1').textContent = '—'; el('sTotal').textContent = '—';
+    return;
+  }
+  var days = Math.round((parse(b) - parse(a)) / 86400000) + 1;
+  var blocks = Math.max(1, Math.ceil(days / BLOCK)), rentTotal = blocks * perBlock;
+  quote = {days:days, blocks:blocks, rent:rentTotal, dep:dep, total:rentTotal + dep};
+  el('sLine1').textContent = 'Rental, ' + days + (days === 1 ? ' day' : ' days') + ' (' + blocks + ' x ' + BLOCK + '-day ' + (blocks === 1 ? 'block' : 'blocks') + ')';
+  el('sVal1').textContent = naira(rentTotal);
+  el('sTotal').textContent = naira(quote.total);
+}
+
+function openOrder(){
+  sheetMode = curMode();
+  var rent = sheetMode === 'rent', today = ymd(new Date());
+  el('dateRow').hidden = !rent;
+  fFrom.required = rent; fTo.required = rent;
+  fFrom.min = today; fTo.min = fFrom.value || today;
+  el('deliveryHead').textContent = rent ? 'Dates and delivery' : 'Delivery';
+  el('orderTitle').textContent = rent ? 'Your rental' : 'Your order';
+  el('orderSub').textContent = rent ? 'Check your pieces, then add your dates and details. Pieces are rented, not sold.' : 'Check your pieces, then add your delivery details.';
+  errBox.hidden = true; done.hidden = true; form.hidden = false;
+  try {
+    var d = JSON.parse(store('jm_details') || '{}');
+    ['name','phone','email','addr'].forEach(function(k){ var f = form.elements[k]; if (f && !f.value && d[k]) f.value = d[k]; });
+  } catch (e) {}
+  renderItems(); recalc();
+  document.documentElement.classList.add('lock');
+  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  dlg.scrollTop = 0;
+}
+function closeOrder(){
+  if (dlg.close) dlg.close(); else dlg.removeAttribute('open');
+  document.documentElement.classList.remove('lock');
+}
+dlg.addEventListener('close', function(){ document.documentElement.classList.remove('lock'); });
+dlg.addEventListener('click', function(e){ if (e.target === dlg) closeOrder(); });
+el('closeOrder').addEventListener('click', closeOrder);
+el('cartBtn').addEventListener('click', openOrder);
+el('cartBarBtn').addEventListener('click', openOrder);
+fFrom.addEventListener('change', function(){
+  if (fFrom.value){ fTo.min = fFrom.value; if (fTo.value && parse(fTo.value) < parse(fFrom.value)) fTo.value = fFrom.value; }
+  recalc();
+});
+fTo.addEventListener('change', recalc);
+
+function buildMessage(f, ref){
+  var rent = sheetMode === 'rent';
+  var lines = [(rent ? 'Rental order ' : 'Purchase order ') + ref, 'Beads by Jummymira', '', 'Pieces:'];
+  cartItems().forEach(function(x){
+    lines.push('- ' + x.q + ' x ' + x.p.name + (rent ? ' (' + naira(x.p.price) + ' per ' + BLOCK + ' days, deposit ' + naira(x.p.deposit) + ' each)' : ' (' + naira(x.p.price) + ' each)'));
+  });
+  lines.push('');
+  if (rent){
+    lines.push('Delivery: ' + fmtDate(f.from.value), 'Return: ' + fmtDate(f.to.value) + ' (' + quote.days + (quote.days === 1 ? ' day' : ' days') + ')',
+      'Rental: ' + naira(quote.rent), 'Deposit (refundable): ' + naira(quote.dep), 'Total: ' + naira(quote.total));
+  } else {
+    lines.push('Beads: ' + naira(quote.sub), 'Delivery cost: to be confirmed', 'Total before delivery: ' + naira(quote.total));
+  }
+  lines.push('', 'Name: ' + f.name.value.trim(), 'Phone: ' + f.phone.value.trim(), 'Email: ' + f.email.value.trim(), 'Address: ' + f.addr.value.trim());
+  if (f.note.value.trim()) lines.push('Note: ' + f.note.value.trim());
+  return lines.join('\n');
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  var f = form.elements, msg = '', rent = sheetMode === 'rent';
+  if (cartItems().length === 0) msg = 'Add at least one piece to your order.';
+  else if (rent && (!f.from.value || !f.to.value)) msg = 'Choose a delivery date and a return date.';
+  else if (rent && !quote) msg = 'The return date must be on or after the delivery date.';
+  else if (!f.addr.value.trim()) msg = 'Enter the delivery address, with city and state.';
+  else if (!f.name.value.trim()) msg = 'Enter your full name.';
+  else if (!f.phone.value.trim()) msg = 'Enter a WhatsApp or phone number we can reach you on.';
+  else if (!f.email.value.trim() || !f.email.validity.valid) msg = 'Enter a valid email address, like you@example.com.';
+  if (msg){ errBox.textContent = msg; errBox.hidden = false; return; }
+  errBox.hidden = true;
+  store('jm_details', JSON.stringify({name:f.name.value.trim(), phone:f.phone.value.trim(), email:f.email.value.trim(), addr:f.addr.value.trim()}));
+  var ref = (rent ? 'JR-' : 'JS-') + Date.now().toString(36).slice(-5).toUpperCase();
+  var text = buildMessage(f, ref);
+  el('refCode').textContent = 'Order ' + ref;
+  el('summaryText').value = text;
+  var wa = String(S.whatsapp || '').replace(/\D/g,''), waLink = el('waLink');
+  if (wa){ waLink.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(text); waLink.hidden = false; } else { waLink.hidden = true; }
+  var ig = el('igLink');
+  if (S.instagram){ ig.href = 'https://ig.me/m/' + encodeURIComponent(S.instagram); ig.hidden = false; } else { ig.hidden = true; }
+  var pay = el('payNote');
+  if (S.paymentNote){ pay.textContent = S.paymentNote; pay.hidden = false; } else { pay.hidden = true; }
+  el('copyNote').textContent = wa ? '' : 'Copy the message, then paste it into a chat with us and send it.';
+  el('orderTitle').textContent = 'Send your ' + (rent ? 'rental' : 'order');
+  el('orderSub').textContent = '';
+  form.hidden = true; done.hidden = false;
+  dlg.scrollTop = 0;
+});
+el('copyBtn').addEventListener('click', function(){
+  var ta = el('summaryText'), note = el('copyNote');
+  function fallback(){ ta.focus(); ta.select(); note.textContent = 'Select the text and copy it, then paste it into our chat.'; }
+  try { navigator.clipboard.writeText(ta.value).then(function(){ note.textContent = 'Copied. Paste it into our chat and send it.'; }, fallback); }
+  catch (err){ fallback(); }
+});
+el('editBtn').addEventListener('click', function(){
+  done.hidden = true; form.hidden = false;
+  el('orderTitle').textContent = sheetMode === 'rent' ? 'Your rental' : 'Your order';
+  renderItems();
+});
+el('clearBtn').addEventListener('click', function(){
+  cart[sheetMode] = {}; store('jm_cart3', JSON.stringify(cart));
+  onCartChange(); closeOrder();
+});
+
+/* ---------- Start ---------- */
+renderGrid(el('gridPreview'), LIST.sale.slice(0, 6), 'sale');
+renderGrid(el('gridSale'), LIST.sale, 'sale');
+renderGrid(el('gridRent'), LIST.rent, 'rent');
+renderCopy();
+drawHero();
+applyFilter('sale'); applyFilter('rent');
+route();
+</script>
+
+</body></html>
