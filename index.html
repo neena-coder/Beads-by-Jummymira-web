@@ -1,6 +1,9 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beads by Jummymira</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap">
@@ -135,6 +138,34 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .pill.ok{background:#d6f1e1;color:#0b5a2d}
 .pill.low{background:#fdebc8;color:#7a4a00}
 .pill.off{background:#e9e2ea;color:#4a3d50}
+.peek-btn{position:absolute;inset:0;z-index:2;width:100%;height:100%;border:0;background:transparent;cursor:zoom-in;padding:0}
+.peek-btn:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.tile .count{position:absolute;left:.75rem;bottom:.75rem;z-index:3;padding:.2rem .6rem;border-radius:999px;background:rgba(20,8,26,.72);color:#fff;font-size:.75rem;font-weight:600;pointer-events:none}
+.card h3 .namebtn{all:unset;cursor:pointer;display:block}
+.card h3 .namebtn:hover{text-decoration:underline}
+.card h3 .namebtn:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:.25rem}
+#peekDlg{max-width:100%}
+#peekDlg .x{z-index:6;background:rgba(255,255,255,.92);color:#2a1630;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+#peekDlg .sheet{padding-top:1rem}
+@media (min-width:56rem){#peekDlg{max-width:60rem}#peekDlg .peek{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1.5rem;align-items:start}}
+.peek{display:grid;gap:1.1rem}
+.gal{display:grid;gap:.6rem;min-width:0}
+.gal .stage{position:relative;aspect-ratio:1;border-radius:1rem;overflow:hidden;background:radial-gradient(90% 90% at 50% 20%,var(--tile-a),var(--tile-b));touch-action:pan-y}
+.gal .stage img,.gal .stage svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.gal .nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:2.75rem;height:2.75rem;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#2a1630;cursor:pointer;display:grid;place-items:center;font:700 1.25rem var(--font-body);box-shadow:0 1px 6px rgba(0,0,0,.25)}
+.gal .nav[disabled]{opacity:.35;cursor:default}
+.gal .prev{left:.6rem}.gal .next{right:.6rem}
+.gal .pos{position:absolute;right:.6rem;bottom:.6rem;z-index:2;padding:.2rem .6rem;border-radius:999px;background:rgba(20,8,26,.72);color:#fff;font-size:.75rem;font-weight:600}
+.thumbs{display:flex;gap:.5rem;overflow-x:auto;padding:.15rem;scroll-snap-type:x proximity}
+.thumbs button{flex:none;width:4.25rem;height:4.25rem;padding:0;border-radius:.7rem;overflow:hidden;border:2px solid transparent;background:var(--surface-2);cursor:pointer;scroll-snap-align:start}
+.thumbs button[aria-current="true"]{border-color:var(--accent)}
+.thumbs button:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.peek .info{display:grid;gap:.9rem;align-content:start}
+.peek .info h2{padding-right:3rem}
+.peek .info .meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.peek .info .pill{position:static}
+.peek .info .tag{position:static}
 .card-body{display:flex;flex-direction:column;gap:.75rem;flex:1;padding:1.1rem 1.1rem 1.25rem}
 .card h3{font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
 .desc{color:var(--muted);font-size:.9375rem}
@@ -220,7 +251,45 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
 .done{display:grid;gap:1rem;margin-top:1.25rem}
 .ref{display:inline-block;justify-self:start;padding:.25rem .8rem;border-radius:999px;background:var(--accent-soft);color:var(--ink);font:700 1rem var(--font-display);letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sway{animation:none}.btn{transition:none}}
+
+.grid .empty{grid-column:1/-1}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;overflow:hidden}
+.preview{margin:0;padding:.35rem 1rem;background:#7a0f91;color:#fff;font-size:.8125rem;text-align:center}
+.trackbox{display:grid;gap:1rem;max-width:34rem}
+.trackform{display:flex;flex-wrap:wrap;gap:.75rem;align-items:end}
+.trackform label{flex:1;min-width:12rem}
+.trackform input{font:700 1.15rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+.recent{display:flex;flex-wrap:wrap;gap:.5rem}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:1.25rem;padding:1.25rem;display:grid;gap:1rem}
+.result h2{font-size:1.75rem;font-weight:700}
+.result .msg{padding:.75rem 1rem;border-radius:.9rem;background:var(--accent-soft);color:var(--ink)}
+.tsteps{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.tsteps li{display:flex;align-items:center;gap:.75rem;color:var(--muted)}
+.tsteps li::before{content:"";flex:none;width:1.1rem;height:1.1rem;border-radius:50%;border:2px solid var(--line);background:var(--surface)}
+.tsteps li.passed{color:var(--ink)}
+.tsteps li.passed::before{background:var(--accent);border-color:var(--accent)}
+.tsteps li.now{color:var(--ink);font-weight:700}
+.tsteps li.now::before{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.items-t{width:100%;border-collapse:collapse;font-size:.9375rem}
+.items-t td{padding:.5rem 0;border-bottom:1px solid var(--line)}
+.items-t td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.kv2{display:grid;grid-template-columns:1fr auto;gap:.35rem 1rem;margin:0;font-size:.9375rem;font-variant-numeric:tabular-nums}
+.kv2 dd{margin:0;text-align:right}
+.codebig{font:800 clamp(2rem,9vw,2.75rem) ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-align:center;padding:1rem;border-radius:1rem;background:var(--accent-soft);color:var(--ink);user-select:all;overflow-wrap:anywhere}
+.two{display:flex;flex-wrap:wrap;gap:.75rem}
+.paycard{display:grid;gap:.75rem;padding:1rem;border-radius:1rem;border:1.5px solid var(--accent);background:var(--surface)}
+.paycard h3{font:700 1.0625rem var(--font-display)}
+.paycard .amt{font:800 1.5rem var(--font-display)}
+.acct{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;padding:.75rem 1rem;border-radius:.9rem;background:var(--accent-soft);color:var(--ink)}
+.acct b{font:800 1.375rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em}
+.paycard ol{margin:0;padding-left:1.2rem;display:grid;gap:.3rem;color:var(--muted);font-size:.9375rem}
+.paycard.ok{border-color:var(--line)}
+.paycard .perr{color:var(--danger);font-size:.9375rem}
+.two .btn{flex:1;min-width:10rem}
 </style>
+</head>
+<body>
+
 
 <script type="application/json" id="inventory">
 {
@@ -233,36 +302,327 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
     "updated": "2026-10-31"
   },
   "sale": [
-    {"id":"s1","cat":"waist","tag":"Waist beads","name":"Black & Gold Waist Beads","price":6500,"stock":8,"desc":"Onyx-black beads with gold spacers, strung for the waist.","kind":"waist","pat":["ink","ink","gold:.7"],"photo":""},
-    {"id":"s2","cat":"necklace","tag":"Necklaces","name":"Pearl Beaded Necklace","price":9000,"stock":5,"desc":"A soft pearl strand with gold accent beads.","kind":"necklace","pat":["pearl","pearl","pearl","pearl","pearl","pearl","gold:1.15"],"photo":""},
-    {"id":"s3","cat":"bracelet","tag":"Bracelets","name":"Gold & Black Bracelet","price":4500,"stock":10,"desc":"Stacked strands in gold and onyx for a clean finish.","kind":"bracelet","pat":["gold","ink","gold","gold","ink"],"photo":""},
-    {"id":"s4","cat":"waist","tag":"Waist beads","name":"Coral Waist Beads","price":6000,"stock":6,"desc":"Warm coral beads broken up with small gold rings.","kind":"waist","pat":["coral","coral","coral","gold:.7"],"photo":""},
-    {"id":"s5","cat":"necklace","tag":"Necklaces","name":"Magenta Statement Necklace","price":10000,"stock":3,"desc":"Bold magenta beads with gold, made to sit at the collarbone.","kind":"necklace","pat":["mag","mag","gold:.8","mag","mag","gold:.8"],"photo":""},
-    {"id":"s6","cat":"bracelet","tag":"Bracelets","name":"Beaded Anklet","price":3500,"stock":12,"desc":"A light pearl and gold anklet for sandals and the beach.","kind":"bracelet","pat":["pearl","gold:.8","pearl","pearl","coral:.9"],"photo":""},
-    {"id":"s7","cat":"set","tag":"Sets","name":"Pearl & Gold Bridal Set","price":22000,"stock":2,"desc":"Matching necklace and bracelet in pearl and gold.","kind":"set","pat":["pearl","pearl","pearl","gold:1.1"],"photo":""},
-    {"id":"s8","cat":"waist","tag":"Waist beads","name":"Blush Pink Waist Beads","price":6000,"stock":4,"desc":"Soft blush beads with pearl accents.","kind":"waist","pat":["blush","blush","pearl:.8","blush"],"photo":""},
-    {"id":"s9","cat":"necklace","tag":"Necklaces","name":"Gold Drop Bead Necklace","price":8500,"stock":0,"desc":"Gold beads in a graduated drop.","kind":"necklace","pat":["gold","gold","gold:1.2","gold","gold"],"photo":""},
-    {"id":"s10","cat":"set","tag":"Sets","name":"Magenta & Gold Everyday Set","price":14000,"stock":3,"desc":"Waist beads and bracelet in a matching colour story.","kind":"set","pat":["mag","gold:.8","mag","mag"],"photo":""}
+    {
+      "id": "s1",
+      "cat": "waist",
+      "tag": "Waist beads",
+      "name": "Black & Gold Waist Beads",
+      "price": 6500,
+      "stock": 8,
+      "desc": "Onyx-black beads with gold spacers, strung for the waist.",
+      "kind": "waist",
+      "pat": [
+        "ink",
+        "ink",
+        "gold:.7"
+      ],
+      "photo": "",
+      "photos": [
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22300%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22338%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22364%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22368%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22349%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22313%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22274%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22243%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22231%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22242%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22273%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22313%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3EFront%20view%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%201%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22358%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22369%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22357%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22325%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22286%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22250%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22232%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22236%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22262%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22300%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22339%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22364%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3EClose-up%20of%20the%20gold%20spacers%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%202%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22363%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22336%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22298%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22260%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22235%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22232%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22253%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22289%22%20r%3D%2226%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22328%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22359%22%20r%3D%2222%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22369%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22357%22%20r%3D%2230%22%20fill%3D%22%231b1b1b%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3EWorn%20on%20the%20waist%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%203%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ]
+    },
+    {
+      "id": "s2",
+      "cat": "necklace",
+      "tag": "Necklaces",
+      "name": "Pearl Beaded Necklace",
+      "price": 9000,
+      "stock": 5,
+      "desc": "A soft pearl strand with gold accent beads.",
+      "kind": "necklace",
+      "pat": [
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "gold:1.15"
+      ],
+      "photo": "",
+      "photos": [
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22300%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22338%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22364%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22368%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22349%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22313%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22274%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22243%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22231%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22242%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22273%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22313%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3EFull%20strand%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%201%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22358%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22369%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22357%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22325%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22286%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22250%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22232%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22236%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22262%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22300%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22339%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22364%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3EClasp%20detail%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%202%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20800%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2230%25%22%20r%3D%2280%25%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f6e8f9%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d9b9e0%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22800%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22363%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22336%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22226%22%20cy%3D%22298%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22274%22%20cy%3D%22260%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22235%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22370%22%20cy%3D%22232%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22418%22%20cy%3D%22253%22%20r%3D%2222%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22466%22%20cy%3D%22289%22%20r%3D%2226%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22514%22%20cy%3D%22328%22%20r%3D%2230%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22562%22%20cy%3D%22359%22%20r%3D%2222%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22610%22%20cy%3D%22369%22%20r%3D%2226%22%20fill%3D%22%23d9a93a%22%20stroke%3D%22%2300000022%22%2F%3E%3Ccircle%20cx%3D%22658%22%20cy%3D%22357%22%20r%3D%2230%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%2300000022%22%2F%3E%3Ctext%20x%3D%22400%22%20y%3D%22640%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2234%22%20fill%3D%22%234a2a55%22%3ELaid%20flat%3C%2Ftext%3E%3Ctext%20x%3D%22400%22%20y%3D%22690%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%237a5a85%22%3ESample%20photo%203%20of%203%20%28replace%20in%20the%20dashboard%29%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ]
+    },
+    {
+      "id": "s3",
+      "cat": "bracelet",
+      "tag": "Bracelets",
+      "name": "Gold & Black Bracelet",
+      "price": 4500,
+      "stock": 10,
+      "desc": "Stacked strands in gold and onyx for a clean finish.",
+      "kind": "bracelet",
+      "pat": [
+        "gold",
+        "ink",
+        "gold",
+        "gold",
+        "ink"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s4",
+      "cat": "waist",
+      "tag": "Waist beads",
+      "name": "Coral Waist Beads",
+      "price": 6000,
+      "stock": 6,
+      "desc": "Warm coral beads broken up with small gold rings.",
+      "kind": "waist",
+      "pat": [
+        "coral",
+        "coral",
+        "coral",
+        "gold:.7"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s5",
+      "cat": "necklace",
+      "tag": "Necklaces",
+      "name": "Magenta Statement Necklace",
+      "price": 10000,
+      "stock": 3,
+      "desc": "Bold magenta beads with gold, made to sit at the collarbone.",
+      "kind": "necklace",
+      "pat": [
+        "mag",
+        "mag",
+        "gold:.8",
+        "mag",
+        "mag",
+        "gold:.8"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s6",
+      "cat": "bracelet",
+      "tag": "Bracelets",
+      "name": "Beaded Anklet",
+      "price": 3500,
+      "stock": 12,
+      "desc": "A light pearl and gold anklet for sandals and the beach.",
+      "kind": "bracelet",
+      "pat": [
+        "pearl",
+        "gold:.8",
+        "pearl",
+        "pearl",
+        "coral:.9"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s7",
+      "cat": "set",
+      "tag": "Sets",
+      "name": "Pearl & Gold Bridal Set",
+      "price": 22000,
+      "stock": 2,
+      "desc": "Matching necklace and bracelet in pearl and gold.",
+      "kind": "set",
+      "pat": [
+        "pearl",
+        "pearl",
+        "pearl",
+        "gold:1.1"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s8",
+      "cat": "waist",
+      "tag": "Waist beads",
+      "name": "Blush Pink Waist Beads",
+      "price": 6000,
+      "stock": 4,
+      "desc": "Soft blush beads with pearl accents.",
+      "kind": "waist",
+      "pat": [
+        "blush",
+        "blush",
+        "pearl:.8",
+        "blush"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s9",
+      "cat": "necklace",
+      "tag": "Necklaces",
+      "name": "Gold Drop Bead Necklace",
+      "price": 8500,
+      "stock": 0,
+      "desc": "Gold beads in a graduated drop.",
+      "kind": "necklace",
+      "pat": [
+        "gold",
+        "gold",
+        "gold:1.2",
+        "gold",
+        "gold"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "s10",
+      "cat": "set",
+      "tag": "Sets",
+      "name": "Magenta & Gold Everyday Set",
+      "price": 14000,
+      "stock": 3,
+      "desc": "Waist beads and bracelet in a matching colour story.",
+      "kind": "set",
+      "pat": [
+        "mag",
+        "gold:.8",
+        "mag",
+        "mag"
+      ],
+      "photo": ""
+    }
   ],
   "rent": [
-    {"id":"r1","cat":"waist","tag":"Waist beads","name":"Black & Gold Waist Bead","price":5000,"deposit":15000,"stock":3,"backOn":"","desc":"Onyx-black beads with gold spacers, strung for the waist.","kind":"waist","pat":["ink","ink","gold:.7"],"photo":""},
-    {"id":"r2","cat":"necklace","tag":"Necklaces","name":"Pearl Necklace","price":7000,"deposit":20000,"stock":2,"backOn":"","desc":"A soft pearl strand with gold accent beads.","kind":"necklace","pat":["pearl","pearl","pearl","pearl","pearl","pearl","gold:1.15"],"photo":""},
-    {"id":"r3","cat":"bracelet","tag":"Bracelets","name":"Gold & Black Bracelet","price":4000,"deposit":10000,"stock":4,"backOn":"","desc":"Stacked strands in gold and onyx for a clean finish.","kind":"bracelet","pat":["gold","ink","gold","gold","ink"],"photo":""},
-    {"id":"r4","cat":"waist","tag":"Waist beads","name":"Coral & Gold Waist Bead","price":5500,"deposit":15000,"stock":0,"backOn":"2026-11-08","desc":"Warm coral beads broken up with small gold rings.","kind":"waist","pat":["coral","coral","coral","gold:.7"],"photo":""},
-    {"id":"r5","cat":"necklace","tag":"Necklaces","name":"Magenta Statement Necklace","price":8000,"deposit":20000,"stock":1,"backOn":"","desc":"Bold magenta beads with gold, made to sit at the collarbone.","kind":"necklace","pat":["mag","mag","gold:.8","mag","mag","gold:.8"],"photo":""},
-    {"id":"r6","cat":"set","tag":"Sets","name":"Pearl & Gold Bridal Set","price":12000,"deposit":35000,"stock":1,"backOn":"","desc":"Matching necklace and bracelet in pearl and gold.","kind":"set","pat":["pearl","pearl","pearl","gold:1.1"],"photo":""}
+    {
+      "id": "r1",
+      "cat": "waist",
+      "tag": "Waist beads",
+      "name": "Black & Gold Waist Bead",
+      "price": 5000,
+      "deposit": 15000,
+      "stock": 3,
+      "backOn": "",
+      "desc": "Onyx-black beads with gold spacers, strung for the waist.",
+      "kind": "waist",
+      "pat": [
+        "ink",
+        "ink",
+        "gold:.7"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "r2",
+      "cat": "necklace",
+      "tag": "Necklaces",
+      "name": "Pearl Necklace",
+      "price": 7000,
+      "deposit": 20000,
+      "stock": 2,
+      "backOn": "",
+      "desc": "A soft pearl strand with gold accent beads.",
+      "kind": "necklace",
+      "pat": [
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "pearl",
+        "gold:1.15"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "r3",
+      "cat": "bracelet",
+      "tag": "Bracelets",
+      "name": "Gold & Black Bracelet",
+      "price": 4000,
+      "deposit": 10000,
+      "stock": 4,
+      "backOn": "",
+      "desc": "Stacked strands in gold and onyx for a clean finish.",
+      "kind": "bracelet",
+      "pat": [
+        "gold",
+        "ink",
+        "gold",
+        "gold",
+        "ink"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "r4",
+      "cat": "waist",
+      "tag": "Waist beads",
+      "name": "Coral & Gold Waist Bead",
+      "price": 5500,
+      "deposit": 15000,
+      "stock": 0,
+      "backOn": "2026-11-08",
+      "desc": "Warm coral beads broken up with small gold rings.",
+      "kind": "waist",
+      "pat": [
+        "coral",
+        "coral",
+        "coral",
+        "gold:.7"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "r5",
+      "cat": "necklace",
+      "tag": "Necklaces",
+      "name": "Magenta Statement Necklace",
+      "price": 8000,
+      "deposit": 20000,
+      "stock": 1,
+      "backOn": "",
+      "desc": "Bold magenta beads with gold, made to sit at the collarbone.",
+      "kind": "necklace",
+      "pat": [
+        "mag",
+        "mag",
+        "gold:.8",
+        "mag",
+        "mag",
+        "gold:.8"
+      ],
+      "photo": ""
+    },
+    {
+      "id": "r6",
+      "cat": "set",
+      "tag": "Sets",
+      "name": "Pearl & Gold Bridal Set",
+      "price": 12000,
+      "deposit": 35000,
+      "stock": 1,
+      "backOn": "",
+      "desc": "Matching necklace and bracelet in pearl and gold.",
+      "kind": "set",
+      "pat": [
+        "pearl",
+        "pearl",
+        "pearl",
+        "gold:1.1"
+      ],
+      "photo": ""
+    }
   ]
 }
 </script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="beadDefs"></defs></svg>
 
-<div class="top"><div class="wrap">Handmade beads to buy or rent. Fast delivery in selected locations.</div></div>
+<div class="top"><div class="wrap" id="announce">Handmade beads to buy or rent. Fast delivery in selected locations.</div></div>
+<p class="preview" id="previewNote" hidden>Preview mode: this site is not connected to the shop sheet yet, so orders are only kept on this device.</p>
 
 <header>
   <div class="wrap">
     <div class="bar">
-      <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="data:image/png;base64,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" alt="Beads by Jummymira"></a>
+      <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="logo.png" alt="Beads by Jummymira"></a>
       <div class="actions">
         <button class="cart-btn" id="cartBtn" type="button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
@@ -276,6 +636,7 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
         <a href="#home" data-nav="home">Home</a>
         <a href="#shop" data-nav="shop">Beads for sale</a>
         <a href="#rent" data-nav="rent">Rent beads</a>
+        <a href="#track" data-nav="track">Track order</a>
         <a href="#faq" data-nav="faq">FAQ</a>
       </nav>
     </div>
@@ -297,7 +658,7 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
         </div>
         <ul class="facts">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="factSale">Beads for sale</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Orders confirmed on WhatsApp</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Track your order with a code</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Delivery nationwide</li>
         </ul>
       </div>
@@ -338,10 +699,12 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
     <div class="wrap">
       <div class="head"><h2>Questions</h2></div>
       <div class="faq">
-        <details><summary>How do I place an order?</summary><p>Add the pieces you want to your order, fill in your delivery details, and the order sheet gives you a message to send to us on WhatsApp. Your order is confirmed once we reply.</p></details>
+        <details><summary>How do I place an order?</summary><p>Add the pieces you want to your order, fill in your delivery details and tap Place order. You get an order code. You then pay by transfer to our OPay account. Once we see the money, we confirm your order, and you can use the code on the Track order page to see if your order is confirmed or ready for delivery.</p></details>
+        <details><summary>How do I pay?</summary><p>By bank transfer to our OPay account. After you place your order you see the account number, the exact amount and a place to tell us you have paid. We check our account, confirm your payment, and only then is your order confirmed. We never ask for card details.</p></details>
         <details><summary>Can I buy and rent in the same order?</summary><p>Buying and renting are two separate orders. Place one for the beads you want to keep and another for the ones you want to rent.</p></details>
         <details><summary>Do you deliver outside Lagos?</summary><p>Yes. Nationwide delivery can be offered, with cost and timing depending on destination. We confirm the delivery cost when we reply to your order.</p></details>
         <details><summary>How long does delivery take?</summary><p>Same-day or next-day delivery can be available in selected locations. Other locations depend on the courier.</p></details>
+        <details><summary>I lost my order code. What do I do?</summary><p>Message us with your name and phone number and we will find your order and send the code again.</p></details>
         <details><summary>How does renting work?</summary><p>See the rental page for pricing, deposits, returns and late fees.</p></details>
       </div>
     </div>
@@ -404,7 +767,7 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
       <div class="head"><h2>How renting works</h2><p>Five steps from browsing to getting your deposit back.</p></div>
       <ol class="steps">
         <li><div><b>Browse</b><p>Choose what is available.</p></div></li>
-        <li><div><b>Order</b><p>Add pieces, pick your dates and send the order to us on WhatsApp.</p></div></li>
+        <li><div><b>Order</b><p>Add pieces, pick your dates and place your order. You get a code to track it.</p></div></li>
         <li><div><b>We deliver</b><p>We confirm your order and your jewellery arrives.</p></div></li>
         <li><div><b>Wear and enjoy</b><p>Make your moment sparkle.</p></div></li>
         <li><div><b>Return</b><p>Courier pickup, then your deposit is refunded after inspection.</p></div></li>
@@ -427,19 +790,44 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
   </section>
 </div>
 
+<!-- ============ TRACK ============ -->
+<div class="view" id="v-track" hidden>
+  <div class="wrap">
+    <div class="pagehead">
+      <a class="crumb" href="#home">&larr; Back to home</a>
+      <h1>Track your order</h1>
+      <p>Enter the code you got when you placed your order to see if it is confirmed or ready for delivery.</p>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="wrap">
+      <div class="trackbox">
+        <form class="trackform" id="trackForm" novalidate>
+          <label for="tCode">Order code<input id="tCode" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="K7QM-2XPD"></label>
+          <button class="btn primary" type="submit" id="tBtn">Check order</button>
+        </form>
+        <p class="err" id="tErr" role="alert" hidden></p>
+        <div id="recentWrap" hidden><p class="muted" style="font-size:.875rem;margin:0 0 .5rem;color:var(--muted)">Orders placed on this device</p><div class="recent" id="recent"></div></div>
+        <div class="result" id="tResult" hidden aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
 </main>
 
 <footer>
   <div class="wrap">
     <div class="foot">
       <div class="col">
-        <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="data:image/png;base64,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" alt="Beads by Jummymira"></a>
+        <a class="logo-chip" href="#home" aria-label="Beads by Jummymira, home"><img src="logo.png" alt="Beads by Jummymira"></a>
         <p>Made by hands, worn by hearts. Handcrafted beads for your special moments.</p>
       </div>
       <div class="col">
         <h3>Explore</h3>
         <a href="#shop">Beads for sale</a>
         <a href="#rent">Rent beads</a>
+        <a href="#track">Track order</a>
         <a href="#faq">FAQ</a>
       </div>
       <div class="col" id="contactCol"><h3>Contact</h3></div>
@@ -493,32 +881,58 @@ textarea{min-height:5.5rem;resize:vertical;font-size:.9375rem}
         <small id="sNote"></small>
       </div>
       <p class="err" id="err" role="alert" hidden></p>
-      <button class="btn primary block" type="submit" id="submitBtn">Prepare my order</button>
+      <div class="hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn primary block" type="submit" id="submitBtn">Place order</button>
     </form>
 
-    <div class="done" id="done" hidden>
-      <span class="ref" id="refCode"></span>
-      <p><b>Your order is ready to send.</b> It is not placed until you send it to us. We confirm availability and the next steps when we reply.</p>
-      <label for="summaryText" class="sr">Order message</label>
-      <textarea id="summaryText" readonly style="min-height:11rem"></textarea>
-      <a class="btn primary block" id="waLink" href="#" hidden>Send on WhatsApp</a>
-      <button class="btn primary block" type="button" id="copyBtn">Copy order message</button>
-      <a class="btn ghost block" id="igLink" href="#" hidden>Message us on Instagram</a>
-      <p class="sub" id="copyNote" aria-live="polite"></p>
-      <p class="sub" id="payNote" hidden></p>
-      <button class="btn ghost block" type="button" id="editBtn">Change my order</button>
-      <button class="link-btn" type="button" id="clearBtn">I have sent it. Clear my order.</button>
+  </div>
+</dialog>
+
+<dialog id="peekDlg" aria-labelledby="peekTitle">
+  <div class="sheet">
+    <button class="x" type="button" id="peekClose" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="peek" id="peekBody"></div>
+  </div>
+</dialog>
+
+<dialog id="codeDlg" aria-labelledby="codeTitle">
+  <div class="sheet">
+    <button class="x" type="button" id="codeClose" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <h2 id="codeTitle">Your order is placed</h2>
+    <p class="sub" id="codeLead"></p>
+    <div class="done">
+      <div class="codebig" id="codeBig" aria-label="Your order code"></div>
+      <button class="btn primary block" type="button" id="codeCopy">Copy code</button>
+      <div class="two"><button class="btn ghost" type="button" id="codeSave">Save as text file</button><button class="btn ghost" type="button" id="codeShare" hidden>Share code</button></div>
+      <p class="sub">Take a screenshot, paste it into your notes, or send it to yourself on WhatsApp. Anyone who has this code can see your order, so keep it private.</p>
+      <p class="sub" id="codeDemo" hidden>Preview mode: this code only works on this device until the shop is connected.</p>
+      <div id="codePayBox"></div>
+      <a class="btn primary block" id="codeWa" href="#" hidden>Send the details on WhatsApp</a>
+      <button class="btn ghost block" type="button" id="codeMsg">Copy order message</button>
+      <a class="btn ghost block" href="#track" id="codeTrack">Track this order</a>
+      <p class="sub" id="codeNote" aria-live="polite"></p>
+      <button class="link-btn" type="button" id="codeDone">Done</button>
     </div>
   </div>
 </dialog>
 
+
+<script src="config.js"></script>
 <script>
-/* ---------- Data ---------- */
-var DATA = {settings:{}, sale:[], rent:[]};
-try { DATA = JSON.parse(document.getElementById('inventory').textContent); } catch (e) {}
-var S = DATA.settings || {};
-var BLOCK = Number(S.blockDays) || 3;
-var LIST = {sale: DATA.sale || [], rent: DATA.rent || []};
+/* ---------- Config and data ---------- */
+var CFG = window.JM_CONFIG || {};
+var API = String(CFG.apiUrl || '').trim();
+var SAMPLE = {settings:{}, sale:[], rent:[]};
+try { SAMPLE = JSON.parse(document.getElementById('inventory').textContent); } catch (e) {}
+var S = {};
+var BLOCK = 3;
+var LIST = {sale: [], rent: []};
+var loadState = API ? 'loading' : 'ok';
+var DEFAULT_BANNER = 'Handmade beads to buy or rent. Fast delivery in selected locations.';
 
 /* ---------- Bead drawing ---------- */
 var NS = 'http://www.w3.org/2000/svg';
@@ -592,6 +1006,12 @@ function fmtShort(s){ return parse(s).toLocaleDateString('en-GB', {day:'numeric'
 function byId(mode, id){ return LIST[mode].filter(function(p){ return p.id === id; })[0]; }
 function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
 function el(id){ return document.getElementById(id); }
+function uErr(msg){ var e = new Error(msg); e.user = true; return e; }
+function digits(s){ return String(s || '').replace(/\D/g, ''); }
+function apiUrl(q){ return API + (API.indexOf('?') > -1 ? '&' : '?') + q; }
+function normCode(c){ return String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+function fmtCode(c){ c = normCode(c); return c.slice(0, 4) + '-' + c.slice(4); }
+function siteUrl(){ return location.href.split('#')[0]; }
 
 /* ---------- Carts (one for sale, one for rent) ---------- */
 var cart = {sale:{}, rent:{}};
@@ -599,26 +1019,64 @@ var cart = {sale:{}, rent:{}};
   try {
     var raw = JSON.parse(store('jm_cart3') || '{}');
     ['sale','rent'].forEach(function(m){
-      Object.keys(raw[m] || {}).forEach(function(id){
-        var p = byId(m, id), q = Math.floor(raw[m][id]);
-        if (p && q > 0 && p.stock > 0) cart[m][id] = Math.min(q, p.stock);
-      });
+      Object.keys(raw[m] || {}).forEach(function(id){ var q = Math.floor(raw[m][id]); if (q > 0) cart[m][id] = q; });
     });
   } catch (e) { cart = {sale:{}, rent:{}}; }
 })();
+function saveCart(){ store('jm_cart3', JSON.stringify(cart)); }
+function pruneCarts(){
+  ['sale','rent'].forEach(function(m){
+    Object.keys(cart[m]).forEach(function(id){
+      var p = byId(m, id);
+      if (!p || p.stock <= 0) delete cart[m][id]; else cart[m][id] = Math.min(cart[m][id], p.stock);
+    });
+  });
+  saveCart();
+}
 function cartCount(m){ return Object.keys(cart[m]).reduce(function(n,id){ return n + cart[m][id]; }, 0); }
 function setQty(m, id, q){
   var p = byId(m, id); if (!p) return;
   q = Math.max(0, Math.min(q, p.stock));
   if (q === 0) delete cart[m][id]; else cart[m][id] = q;
-  store('jm_cart3', JSON.stringify(cart));
-  onCartChange();
+  saveCart(); onCartChange();
+}
+
+/* ---------- Data loading ---------- */
+function patFrom(c){
+  var v = (c || []).filter(function(k){ return COLORS[k]; });
+  if (!v.length) return ['gold','mag'];
+  if (v.length === 1) return v[0] === 'gold' ? ['gold','gold','ink:.7'] : [v[0],v[0],v[0],'gold:.7'];
+  return v;
+}
+function prep(list){
+  return list.map(function(p){
+    var q = {}; for (var k in p) q[k] = p[k];
+    q.kind = q.kind || q.cat; q.pat = q.pat || patFrom(q.colours);
+    q.stock = Math.max(0, Math.floor(Number(q.stock) || 0)); q.price = Number(q.price) || 0; q.deposit = Number(q.deposit) || 0;
+    return q;
+  });
+}
+function applyData(d){
+  S = d.settings || {}; BLOCK = Number(S.blockDays) || 3;
+  LIST = {sale: prep(d.sale || []), rent: prep(d.rent || [])};
+  loadState = 'ok';
+  pruneCarts();
+  renderAll();
+}
+function load(){
+  if (!API){ applyData(SAMPLE); el('previewNote').hidden = false; return; }
+  var cached = null;
+  try { cached = JSON.parse(store('jm_products') || 'null'); } catch (e) {}
+  if (cached && cached.sale) applyData(cached); else { loadState = 'loading'; renderAll(); }
+  fetch(apiUrl('action=products'), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    if (!d || !d.ok) throw new Error('bad');
+    store('jm_products', JSON.stringify(d)); applyData(d);
+  }).catch(function(){ if (!(cached && cached.sale)){ loadState = 'error'; renderAll(); } });
 }
 
 /* ---------- Cards ---------- */
 var view = 'home';
 function curMode(){ return view === 'rent' ? 'rent' : 'sale'; }
-
 function status(p, m){
   if (p.stock <= 0){
     if (m === 'rent') return {cls:'off', text: p.backOn ? 'Back ' + fmtShort(p.backOn) : 'Rented out'};
@@ -628,7 +1086,7 @@ function status(p, m){
   return {cls:'ok', text: m === 'rent' ? 'Available' : 'In stock'};
 }
 function actionsHtml(p, m){
-  var q = cart[m][p.id] || 0, d = ' data-mode="' + m + '" data-id="' + p.id + '"';
+  var q = cart[m][p.id] || 0, d = ' data-mode="' + m + '" data-id="' + esc(p.id) + '"';
   if (p.stock <= 0) return '<button class="btn primary block" type="button" disabled>' + (m === 'rent' ? 'Not available now' : 'Sold out') + '</button>';
   if (q === 0) return '<button class="btn primary block" type="button" data-act="add"' + d + '>Add to order</button>';
   return '<div class="stepper"><div class="qty"><button class="step" type="button" data-act="dec"' + d + ' aria-label="Remove one ' + esc(p.name) + '">&minus;</button>' +
@@ -641,29 +1099,49 @@ function priceHtml(p, m){
     '<div><dt>Deposit</dt><dd>' + naira(p.deposit) + ' <small>refundable</small></dd></div></dl>';
   return '<dl class="price"><div><dt>Price</dt><dd>' + naira(p.price) + '</dd></div></dl>';
 }
+function gridMessage(){
+  if (loadState === 'loading') return 'Loading beads...';
+  if (loadState === 'error') return 'We could not load the beads right now. Check your connection and try again.<div style="margin-top:1rem"><button class="btn primary" type="button" data-retry>Try again</button></div>';
+  return 'No beads are listed here yet. Check back soon.';
+}
+function pics(p){
+  var l = Array.isArray(p.photos) && p.photos.length ? p.photos : (p.photo ? [p.photo] : []);
+  return l.filter(function(u){ return /^(https:|data:image\/)/.test(String(u)); }).slice(0, 10);
+}
+function addPhoto(tile, p){
+  var img = document.createElement('img'); img.src = pics(p)[0] || p.photo; img.alt = p.name; img.loading = 'lazy';
+  img.onerror = function(){ img.remove(); addDrawing(tile, p); };
+  tile.insertBefore(img, tile.firstChild);
+}
+function addDrawing(tile, p){
+  var svg = node('svg', {viewBox:'0 0 200 150', preserveAspectRatio:'xMidYMid meet', role:'img', 'aria-label':p.name});
+  tile.insertBefore(svg, tile.firstChild);
+  drawPiece(svg, p.kind, p.pat);
+}
 function renderGrid(container, list, m){
   container.innerHTML = '';
+  if (!list.length){ container.innerHTML = '<div class="empty">' + gridMessage() + '</div>'; return; }
   list.forEach(function(p){
     var st = status(p, m);
     var card = document.createElement('article');
     card.className = 'card' + (p.stock <= 0 ? ' out' : '');
     card.dataset.cat = p.cat; card.dataset.mode = m; card.dataset.id = p.id; card.dataset.avail = p.stock > 0 ? '1' : '0';
     card.innerHTML =
-      '<div class="tile"><span class="tag">' + esc(p.tag) + '</span><span class="pill ' + st.cls + '">' + esc(st.text) + '</span></div>' +
-      '<div class="card-body"><h3>' + esc(p.name) + '</h3><p class="desc">' + esc(p.desc) + '</p>' + priceHtml(p, m) +
+      '<div class="tile"><button class="peek-btn" type="button" data-peek aria-label="View photos and details of ' + esc(p.name) + '"></button><span class="tag">' + esc(p.tag) + '</span><span class="pill ' + st.cls + '">' + esc(st.text) + '</span>' +
+        (pics(p).length > 1 ? '<span class="count" aria-hidden="true">' + pics(p).length + ' photos</span>' : '') + '</div>' +
+      '<div class="card-body"><h3><button class="namebtn" type="button" data-peek>' + esc(p.name) + '</button></h3><p class="desc">' + esc(p.desc || '') + '</p>' + priceHtml(p, m) +
       '<div class="act">' + actionsHtml(p, m) + '</div></div>';
-    var tile = card.querySelector('.tile');
     container.appendChild(card);
-    if (p.photo){
-      var img = document.createElement('img'); img.src = p.photo; img.alt = p.name; img.loading = 'lazy'; tile.insertBefore(img, tile.firstChild);
-    } else {
-      var svg = node('svg', {viewBox:'0 0 200 150', preserveAspectRatio:'xMidYMid meet', role:'img', 'aria-label':p.name});
-      tile.insertBefore(svg, tile.firstChild);
-      drawPiece(svg, p.kind, p.pat);
-    }
+    var tile = card.querySelector('.tile');
+    if (pics(p).length) addPhoto(tile, p); else addDrawing(tile, p);
   });
 }
 function refreshActions(){
+  if (peekState && el('peekDlg').open){
+    var pp = byId(peekState.m, peekState.id), pa = el('peekAct');
+    if (pp && pa){ var pf = pa.contains(document.activeElement) ? document.activeElement.dataset.act : null; pa.innerHTML = actionsHtml(pp, peekState.m);
+      if (pf){ var pb = pa.querySelector('[data-act="' + pf + '"]:not([disabled])') || pa.querySelector('button:not([disabled])'); if (pb) pb.focus(); } }
+  }
   document.querySelectorAll('.card').forEach(function(c){
     var m = c.dataset.mode, p = byId(m, c.dataset.id), act = c.querySelector('.act');
     if (!p || !act) return;
@@ -681,7 +1159,8 @@ function applyFilter(m){
     var ok = (filters[m].cat === 'all' || c.dataset.cat === filters[m].cat) && (!filters[m].only || c.dataset.avail === '1');
     c.hidden = !ok; if (ok) shown++;
   });
-  el(m === 'sale' ? 'emptySale' : 'emptyRent').hidden = shown !== 0;
+  var none = LIST[m].length > 0 && shown === 0;
+  el(m === 'sale' ? 'emptySale' : 'emptyRent').hidden = !none;
   el(m === 'sale' ? 'shownSale' : 'shownRent').textContent = shown === 0 ? '' : 'Showing ' + shown + ' of ' + LIST[m].length + ' pieces';
 }
 document.querySelectorAll('.toolbar').forEach(function(tb){
@@ -697,8 +1176,75 @@ document.querySelectorAll('.toolbar').forEach(function(tb){
     applyFilter(m);
   });
 });
+/* ---------- Product preview ---------- */
+var peekState = null, peekDlg = el('peekDlg');
+function openPeek(m, id, start){
+  var p = byId(m, id); if (!p) return;
+  var list = pics(p), st = status(p, m);
+  peekState = {m:m, id:id, i:Math.max(0, Math.min(start || 0, Math.max(0, list.length - 1))), list:list};
+  var rent = m === 'rent';
+  el('peekBody').innerHTML =
+    '<div class="gal" role="group" aria-roledescription="carousel" aria-label="Photos of ' + esc(p.name) + '"><div class="stage" id="peekStage" tabindex="0" aria-live="polite"></div>' +
+      (list.length > 1 ? '<div class="thumbs" id="peekThumbs">' + list.map(function(u, i){
+        return '<button type="button" data-i="' + i + '" aria-label="Show photo ' + (i + 1) + ' of ' + list.length + '"><img src="' + esc(u) + '" alt="" loading="lazy"></button>';
+      }).join('') + '</div>' : '') + '</div>' +
+    '<div class="info"><div class="meta"><span class="tag">' + esc(p.tag) + '</span><span class="pill ' + st.cls + '">' + esc(st.text) + '</span></div>' +
+      '<h2 id="peekTitle">' + esc(p.name) + '</h2>' + (p.desc ? '<p class="desc">' + esc(p.desc) + '</p>' : '') + priceHtml(p, m) +
+      (rent ? '<p class="sub">Rental prices cover ' + BLOCK + ' days. The deposit is refunded after the pieces come back in good condition.</p>' : '') +
+      '<div class="act" id="peekAct">' + actionsHtml(p, m) + '</div></div>';
+  drawPeek();
+  if (peekDlg.showModal) peekDlg.showModal(); else peekDlg.setAttribute('open', '');
+  peekDlg.scrollTop = 0;
+}
+function drawPeek(){
+  var s = peekState; if (!s) return;
+  var p = byId(s.m, s.id), stage = el('peekStage'), n = s.list.length;
+  stage.innerHTML = '';
+  var u = s.list[s.i];
+  if (u){
+    var img = document.createElement('img'); img.src = u; img.alt = p.name + ', photo ' + (s.i + 1) + ' of ' + n;
+    img.onerror = function(){ img.remove(); if (!stage.querySelector('svg')){ var svg = node('svg', {viewBox:'0 0 200 150', preserveAspectRatio:'xMidYMid meet', role:'img', 'aria-label':p.name}); stage.insertBefore(svg, stage.firstChild); drawPiece(svg, p.kind, p.pat); } };
+    stage.appendChild(img);
+  } else {
+    var svg = node('svg', {viewBox:'0 0 200 150', preserveAspectRatio:'xMidYMid meet', role:'img', 'aria-label':p.name}); stage.appendChild(svg); drawPiece(svg, p.kind, p.pat);
+  }
+  if (n > 1){
+    stage.insertAdjacentHTML('beforeend', '<button class="nav prev" type="button" data-nav="-1" aria-label="Previous photo"' + (s.i === 0 ? ' disabled' : '') + '>&lsaquo;</button>' +
+      '<button class="nav next" type="button" data-nav="1" aria-label="Next photo"' + (s.i === n - 1 ? ' disabled' : '') + '>&rsaquo;</button><span class="pos">' + (s.i + 1) + ' / ' + n + '</span>');
+  }
+  document.querySelectorAll('#peekThumbs button').forEach(function(b){
+    var on = Number(b.dataset.i) === s.i; b.setAttribute('aria-current', on ? 'true' : 'false');
+    if (on) try { b.scrollIntoView({block:'nearest', inline:'nearest'}); } catch (e) {}
+  });
+}
+function peekGo(d){
+  var s = peekState; if (!s || s.list.length < 2) return;
+  var j = Math.max(0, Math.min(s.list.length - 1, s.i + d)); if (j === s.i) return; s.i = j; drawPeek();
+}
+function closePeek(){ if (peekDlg.close) peekDlg.close(); else peekDlg.removeAttribute('open'); }
+el('peekClose').addEventListener('click', closePeek);
+peekDlg.addEventListener('click', function(e){
+  if (e.target === peekDlg){ closePeek(); return; }
+  var nv = e.target.closest('[data-nav]'); if (nv){ peekGo(Number(nv.dataset.nav)); var again = el('peekStage').querySelector('[data-nav="' + nv.dataset.nav + '"]:not([disabled])'); if (again) again.focus(); return; }
+  var th = e.target.closest('#peekThumbs [data-i]'); if (th && peekState){ peekState.i = Number(th.dataset.i); drawPeek(); }
+});
+peekDlg.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowLeft'){ peekGo(-1); } else if (e.key === 'ArrowRight'){ peekGo(1); }
+});
+peekDlg.addEventListener('close', function(){ peekState = null; });
+(function(){
+  var x0 = null;
+  peekDlg.addEventListener('touchstart', function(e){ x0 = e.target.closest('.stage') ? e.touches[0].clientX : null; }, {passive:true});
+  peekDlg.addEventListener('touchend', function(e){
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 45) peekGo(dx < 0 ? 1 : -1);
+  }, {passive:true});
+})();
 
 document.addEventListener('click', function(e){
+  if (e.target.closest('[data-retry]')){ load(); return; }
+  var pk = e.target.closest('.card [data-peek]');
+  if (pk){ var cd = pk.closest('.card'); openPeek(cd.dataset.mode, cd.dataset.id, 0); return; }
   var b = e.target.closest('button[data-act][data-id]'); if (!b) return;
   var m = b.dataset.mode, id = b.dataset.id, q = cart[m][id] || 0;
   if (b.dataset.act === 'add' || b.dataset.act === 'inc') setQty(m, id, q + 1);
@@ -706,24 +1252,31 @@ document.addEventListener('click', function(e){
   else if (b.dataset.act === 'rm') setQty(m, id, 0);
 });
 
-/* ---------- Static copy from data ---------- */
+/* ---------- Page copy from data ---------- */
 function renderCopy(){
+  el('announce').textContent = S.announcement || DEFAULT_BANNER;
   var inStock = LIST.sale.filter(function(p){ return p.stock > 0; });
-  if (inStock.length) el('factSale').textContent = 'Beads from ' + naira(Math.min.apply(null, inStock.map(function(p){ return p.price; })));
+  el('factSale').textContent = inStock.length ? 'Beads from ' + naira(Math.min.apply(null, inStock.map(function(p){ return p.price; }))) : 'Handmade beads for sale';
   var avail = LIST.rent.filter(function(p){ return p.stock > 0; });
-  if (avail.length) el('factRent').textContent = 'Rent from ' + naira(Math.min.apply(null, avail.map(function(p){ return p.price; }))) + ' for ' + BLOCK + ' days';
-  el('saleLine').textContent = inStock.length + ' of ' + LIST.sale.length + ' pieces are in stock.' + (S.updated ? ' Updated ' + fmtDate(S.updated) + '.' : '');
-  el('rentLine').textContent = avail.length + ' of ' + LIST.rent.length + ' pieces are available to rent right now. Pick your dates and we handle delivery and the return pickup.';
+  el('factRent').textContent = avail.length ? 'Rent from ' + naira(Math.min.apply(null, avail.map(function(p){ return p.price; }))) + ' for ' + BLOCK + ' days' : 'Rent beads for your occasion';
+  el('saleLine').textContent = LIST.sale.length ? inStock.length + ' of ' + LIST.sale.length + ' pieces are in stock.' + (S.updated ? ' Updated ' + fmtDate(S.updated) + '.' : '') : 'Every piece is handmade and ready to ship.';
+  el('rentLine').textContent = LIST.rent.length ? avail.length + ' of ' + LIST.rent.length + ' pieces are available to rent right now. Pick your dates and we handle delivery and the return pickup.' : 'Pick your dates and we handle delivery and the return pickup.';
   el('seeMoreSale').textContent = LIST.sale.length > 6 ? 'See more beads for sale (' + (LIST.sale.length - 6) + ' more)' : 'See all beads for sale';
-  var col = el('contactCol'), html = '<h3>Contact</h3>', wa = String(S.whatsapp || '').replace(/\D/g,'');
+  var col = el('contactCol'), html = '<h3>Contact</h3>', wa = digits(S.whatsapp);
   if (wa) html += '<p>WhatsApp: +' + esc(wa) + '</p>';
   if (S.instagram) html += '<p>Instagram: <a href="https://instagram.com/' + encodeURIComponent(S.instagram) + '">@' + esc(S.instagram) + '</a></p>';
   if (S.email) html += '<p>Email: ' + esc(S.email) + '</p>';
   col.innerHTML = html;
 }
+function renderAll(){
+  renderGrid(el('gridPreview'), LIST.sale.slice(0, 6), 'sale');
+  renderGrid(el('gridSale'), LIST.sale, 'sale');
+  renderGrid(el('gridRent'), LIST.rent, 'rent');
+  renderCopy(); applyFilter('sale'); applyFilter('rent'); updateBar(); renderRecent();
+}
 
 /* ---------- Router ---------- */
-var VIEWS = ['home','shop','rent'];
+var VIEWS = ['home','shop','rent','track'];
 function route(){
   var h = decodeURIComponent((location.hash || '').slice(1));
   var target = 'home', anchor = null;
@@ -764,7 +1317,7 @@ function onCartChange(){
 }
 
 /* ---------- Order sheet ---------- */
-var dlg = el('orderDlg'), form = el('orderForm'), done = el('done'), errBox = el('err');
+var dlg = el('orderDlg'), form = el('orderForm'), errBox = el('err');
 var fFrom = el('fFrom'), fTo = el('fTo'), quote = null, sheetMode = 'sale';
 
 function cartItems(){ return Object.keys(cart[sheetMode]).map(function(id){ return {p:byId(sheetMode, id), q:cart[sheetMode][id]}; }).filter(function(x){ return x.p; }); }
@@ -774,7 +1327,7 @@ function renderItems(){
   el('itemsEmpty').hidden = items.length !== 0;
   el('items').hidden = items.length === 0;
   el('items').innerHTML = items.map(function(x){
-    var p = x.p, d = ' data-mode="' + sheetMode + '" data-id="' + p.id + '"';
+    var p = x.p, d = ' data-mode="' + sheetMode + '" data-id="' + esc(p.id) + '"';
     return '<li><div class="nm"><span>' + esc(p.name) + '</span><span>' + naira(p.price * x.q) + '</span></div>' +
       '<div class="meta">' + (rent ? naira(p.price) + ' per ' + BLOCK + ' days, deposit ' + naira(p.deposit) + ' each' : naira(p.price) + ' each') + '</div>' +
       '<div class="stepper"><div class="qty"><button class="step" type="button" data-act="dec"' + d + ' aria-label="Remove one ' + esc(p.name) + '">&minus;</button><output>' + x.q + '</output>' +
@@ -824,7 +1377,7 @@ function openOrder(){
   el('deliveryHead').textContent = rent ? 'Dates and delivery' : 'Delivery';
   el('orderTitle').textContent = rent ? 'Your rental' : 'Your order';
   el('orderSub').textContent = rent ? 'Check your pieces, then add your dates and details. Pieces are rented, not sold.' : 'Check your pieces, then add your delivery details.';
-  errBox.hidden = true; done.hidden = true; form.hidden = false;
+  errBox.hidden = true;
   try {
     var d = JSON.parse(store('jm_details') || '{}');
     ['name','phone','email','addr'].forEach(function(k){ var f = form.elements[k]; if (f && !f.value && d[k]) f.value = d[k]; });
@@ -843,27 +1396,116 @@ dlg.addEventListener('click', function(e){ if (e.target === dlg) closeOrder(); }
 el('closeOrder').addEventListener('click', closeOrder);
 el('cartBtn').addEventListener('click', openOrder);
 el('cartBarBtn').addEventListener('click', openOrder);
+el('items').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act]'); if (!b) return;
+  var m = b.dataset.mode, id = b.dataset.id, q = cart[m][id] || 0;
+  if (b.dataset.act === 'inc') setQty(m, id, q + 1);
+  else if (b.dataset.act === 'dec') setQty(m, id, q - 1);
+  else if (b.dataset.act === 'rm') setQty(m, id, 0);
+});
 fFrom.addEventListener('change', function(){
   if (fFrom.value){ fTo.min = fFrom.value; if (fTo.value && parse(fTo.value) < parse(fFrom.value)) fTo.value = fFrom.value; }
   recalc();
 });
 fTo.addEventListener('change', recalc);
 
-function buildMessage(f, ref){
+/* ---------- Order codes and placing an order ---------- */
+var CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function makeCode(){
+  var out = '', buf = new Uint8Array(8);
+  try { crypto.getRandomValues(buf); } catch (e) { for (var i = 0; i < 8; i++) buf[i] = Math.floor(Math.random() * 256); }
+  for (var j = 0; j < 8; j++) out += CODE_CHARS.charAt(buf[j] % CODE_CHARS.length);
+  return fmtCode(out);
+}
+var DEMO_PAY = {bank:'OPay', accountNumber:'0123456789', accountName:'Sample account (preview only)', note:'', configured:true};
+function demoOrders(){ try { return JSON.parse(store('jm_demo_orders') || '{}'); } catch (e) { return {}; } }
+function demoRecord(p, code){
+  var items = cartItems().map(function(x){ return {name:x.p.name, qty:x.q, price:x.p.price, deposit: sheetMode === 'rent' ? x.p.deposit : 0}; });
+  var rec = {ok:true, code:code, type:sheetMode, status:'New', payStatus:'Awaiting payment', pay:DEMO_PAY, first:String(p.name).split(' ')[0], items:items,
+    rental: sheetMode === 'rent' ? quote.rent : quote.sub, deposit: sheetMode === 'rent' ? quote.dep : 0, total:quote.total, from:p.from || '', to:p.to || '', message:''};
+  var all = demoOrders(); all[normCode(code)] = rec; store('jm_demo_orders', JSON.stringify(all));
+  return rec;
+}
+function placeOrder(p){
+  if (!API){
+    return new Promise(function(res){ var code = makeCode(); var rec = demoRecord(p, code); res({ok:true, code:code, total:rec.total, demo:true, payStatus:rec.payStatus, pay:rec.pay}); });
+  }
+  return fetch(API, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(p)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d || !d.ok){ var e = uErr((d && d.error) || 'We could not place your order. Please try again.'); e.refresh = /left|available|listed/.test(e.message); throw e; }
+      return d;
+    });
+}
+function reportPaid(code, payer){
+  if (!API){
+    return new Promise(function(res, rej){
+      var all = demoOrders(), c = normCode(code);
+      if (!all[c]) return rej(uErr('We could not find that order on this device.'));
+      all[c].payStatus = 'Payment reported'; all[c].payer = payer; store('jm_demo_orders', JSON.stringify(all)); res({ok:true, payStatus:'Payment reported'});
+    });
+  }
+  return fetch(API, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action:'paid', code:normCode(code), payer:payer})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (!d || !d.ok) throw uErr((d && d.error) || 'We could not send that. Please try again or message us on WhatsApp.'); return d; });
+}
+function payCardHtml(d){
+  var rent = d.type === 'rent', total = naira(d.total), p = d.pay || {};
+  if (d.status === 'Cancelled') return '';
+  if (d.payStatus === 'Payment confirmed') return '<div class="paycard ok"><h3>Payment confirmed</h3><p class="sub">Thank you. We have received your payment of ' + total + '.</p></div>';
+  if (d.payStatus === 'Payment reported') return '<div class="paycard"><h3>Checking your payment</h3><p class="sub">Thanks' + (d.payer ? ', ' + esc(String(d.payer).split(' ')[0]) : '') + '. We are checking our account for ' + total + '. Once the money shows, we confirm your order. You can check back here with your code.</p></div>';
+  var h = '<div class="paycard"><h3>Pay by transfer</h3><div class="amt">' + total + '</div>' +
+    '<p class="sub">' + (rent ? 'Rental plus refundable deposit. Delivery cost is agreed with you separately.' : 'This covers the beads. Delivery cost is agreed with you separately.') + '</p>';
+  if (p.configured){
+    h += '<div class="acct"><span>' + esc(p.bank || 'OPay') + '<br><b>' + esc(p.accountNumber) + '</b></span><button class="btn ghost" type="button" data-copyacct="' + esc(p.accountNumber) + '">Copy number</button></div>' +
+      '<p><b>' + esc(p.accountName || '') + '</b></p>' +
+      '<ol><li>Open your OPay app, or any bank app.</li><li>Send exactly ' + total + ' to the account above.</li><li>Put ' + esc(d.code) + ' as the remark if you can.</li><li>Come back and tell us below.</li></ol>' +
+      (p.note ? '<p class="sub">' + esc(p.note) + '</p>' : '') +
+      '<form class="payform" novalidate><label>Name on the account you paid from<input name="payer" maxlength="80" autocomplete="name" required></label>' +
+      '<p class="perr" hidden></p><button class="btn primary block" type="submit">I have paid</button></form>' +
+      '<p class="sub">We confirm your order after we see the money in our account. Never send money to any other account for this order.</p>';
+  } else {
+    h += '<p class="sub">Message us on WhatsApp and we will send you the account details.</p>';
+  }
+  return h + '</div>';
+}
+function bindPay(root, d, done){
+  var cp = root.querySelector('[data-copyacct]');
+  if (cp) cp.addEventListener('click', function(){
+    var v = cp.getAttribute('data-copyacct');
+    function ok(){ cp.textContent = 'Copied'; setTimeout(function(){ cp.textContent = 'Copy number'; }, 1800); }
+    try { navigator.clipboard.writeText(v).then(ok, function(){ cp.textContent = v; }); } catch (e) { cp.textContent = v; }
+  });
+  var f = root.querySelector('.payform');
+  if (f) f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = f.elements.payer.value.trim(), err = f.querySelector('.perr'), b = f.querySelector('button[type=submit]');
+    if (!name){ err.textContent = 'Enter the name on the account you sent the money from.'; err.hidden = false; return; }
+    err.hidden = true; b.disabled = true; b.textContent = 'Sending...';
+    reportPaid(d.code, name).then(function(){ d.payStatus = 'Payment reported'; d.payer = name; done(d); })
+      .catch(function(x){ b.disabled = false; b.textContent = 'I have paid'; err.textContent = x && x.user ? x.message : 'We could not send that. Check your connection and try again.'; err.hidden = false; });
+  });
+}
+function recordMine(code, type){
+  var list = []; try { list = JSON.parse(store('jm_mine') || '[]'); } catch (e) {}
+  list = list.filter(function(x){ return x.code !== code; });
+  list.unshift({code:code, type:type});
+  store('jm_mine', JSON.stringify(list.slice(0, 8)));
+}
+function buildMessage(f, code, total){
   var rent = sheetMode === 'rent';
-  var lines = [(rent ? 'Rental order ' : 'Purchase order ') + ref, 'Beads by Jummymira', '', 'Pieces:'];
+  var lines = [(rent ? 'Rental order ' : 'Purchase order ') + code, 'Beads by Jummymira', '', 'Pieces:'];
   cartItems().forEach(function(x){
     lines.push('- ' + x.q + ' x ' + x.p.name + (rent ? ' (' + naira(x.p.price) + ' per ' + BLOCK + ' days, deposit ' + naira(x.p.deposit) + ' each)' : ' (' + naira(x.p.price) + ' each)'));
   });
   lines.push('');
   if (rent){
     lines.push('Delivery: ' + fmtDate(f.from.value), 'Return: ' + fmtDate(f.to.value) + ' (' + quote.days + (quote.days === 1 ? ' day' : ' days') + ')',
-      'Rental: ' + naira(quote.rent), 'Deposit (refundable): ' + naira(quote.dep), 'Total: ' + naira(quote.total));
+      'Rental: ' + naira(quote.rent), 'Deposit (refundable): ' + naira(quote.dep), 'Total: ' + naira(total));
   } else {
-    lines.push('Beads: ' + naira(quote.sub), 'Delivery cost: to be confirmed', 'Total before delivery: ' + naira(quote.total));
+    lines.push('Beads: ' + naira(quote.sub), 'Delivery cost: to be confirmed', 'Total before delivery: ' + naira(total));
   }
-  lines.push('', 'Name: ' + f.name.value.trim(), 'Phone: ' + f.phone.value.trim(), 'Email: ' + f.email.value.trim(), 'Address: ' + f.addr.value.trim());
-  if (f.note.value.trim()) lines.push('Note: ' + f.note.value.trim());
+  lines.push('', 'Name: ' + f.name.value.trim(), 'Phone: ' + f.phone.value.trim(), 'Address: ' + f.addr.value.trim(), 'Order code: ' + code);
   return lines.join('\n');
 }
 
@@ -879,47 +1521,160 @@ form.addEventListener('submit', function(e){
   else if (!f.email.value.trim() || !f.email.validity.valid) msg = 'Enter a valid email address, like you@example.com.';
   if (msg){ errBox.textContent = msg; errBox.hidden = false; return; }
   errBox.hidden = true;
-  store('jm_details', JSON.stringify({name:f.name.value.trim(), phone:f.phone.value.trim(), email:f.email.value.trim(), addr:f.addr.value.trim()}));
-  var ref = (rent ? 'JR-' : 'JS-') + Date.now().toString(36).slice(-5).toUpperCase();
-  var text = buildMessage(f, ref);
-  el('refCode').textContent = 'Order ' + ref;
-  el('summaryText').value = text;
-  var wa = String(S.whatsapp || '').replace(/\D/g,''), waLink = el('waLink');
+  var btn = el('submitBtn'); btn.disabled = true; btn.textContent = 'Placing your order...';
+  var mode = sheetMode;
+  var payload = {action:'order', type:mode, items:cartItems().map(function(x){ return {id:x.p.id, qty:x.q}; }),
+    name:f.name.value.trim(), phone:f.phone.value.trim(), email:f.email.value.trim(), address:f.addr.value.trim(),
+    from: rent ? f.from.value : '', to: rent ? f.to.value : '', note:f.note.value.trim(), website:f.website.value};
+  var text = '';
+  var pending = placeOrder(payload);
+  text = buildMessage(f, '__CODE__', quote.total);
+  pending.then(function(res){
+    store('jm_details', JSON.stringify({name:payload.name, phone:payload.phone, email:payload.email, addr:payload.address}));
+    recordMine(res.code, mode);
+    cart[mode] = {}; saveCart();
+    closeOrder(); onCartChange(); renderRecent();
+    showCode(res, text.replace('__CODE__', res.code), mode);
+  }).catch(function(err){
+    errBox.textContent = err && err.user ? err.message : 'We could not reach the shop. Check your connection and try again, or message us on WhatsApp.';
+    errBox.hidden = false;
+    if (err && err.refresh) load();
+  }).then(function(){ btn.textContent = 'Place order'; btn.disabled = cartItems().length === 0; });
+});
+
+/* ---------- Order code pop-up ---------- */
+var lastOrder = {code:'', text:''};
+var codeDlg = el('codeDlg');
+function showCode(res, text, mode){
+  lastOrder = {code:res.code, text:text};
+  el('codeBig').textContent = res.code;
+  el('codeTitle').textContent = res.demo ? 'Order ready (preview)' : (mode === 'rent' ? 'Your rental is placed' : 'Your order is placed');
+  el('codeLead').textContent = res.demo
+    ? 'This is a preview, so nothing was sent to the shop. Here is how the code works.'
+    : 'Your order has reached us. Save this code first, then pay below so we can confirm your order.';
+  el('codeDemo').hidden = !res.demo;
+  var box = el('codePayBox'), pd = {code:res.code, type:mode, total:res.total, status:'New', payStatus:res.payStatus || 'Awaiting payment', pay:res.pay};
+  function drawPay(){ box.innerHTML = payCardHtml(pd); bindPay(box, pd, function(){ drawPay(); }); }
+  drawPay();
+  var wa = digits(S.whatsapp), waLink = el('codeWa');
   if (wa){ waLink.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(text); waLink.hidden = false; } else { waLink.hidden = true; }
-  var ig = el('igLink');
-  if (S.instagram){ ig.href = 'https://ig.me/m/' + encodeURIComponent(S.instagram); ig.hidden = false; } else { ig.hidden = true; }
-  var pay = el('payNote');
-  if (S.paymentNote){ pay.textContent = S.paymentNote; pay.hidden = false; } else { pay.hidden = true; }
-  el('copyNote').textContent = wa ? '' : 'Copy the message, then paste it into a chat with us and send it.';
-  el('orderTitle').textContent = 'Send your ' + (rent ? 'rental' : 'order');
-  el('orderSub').textContent = '';
-  form.hidden = true; done.hidden = false;
-  dlg.scrollTop = 0;
+  el('codeShare').hidden = !navigator.share;
+  el('codeNote').textContent = '';
+  if (codeDlg.showModal) codeDlg.showModal(); else codeDlg.setAttribute('open', '');
+  codeDlg.scrollTop = 0;
+}
+function copyText(text, okMsg){
+  var note = el('codeNote');
+  function fallback(){
+    var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px';
+    document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove(); note.textContent = ok ? okMsg : 'Select the text and copy it by hand: ' + text.split('\n')[0];
+  }
+  try { navigator.clipboard.writeText(text).then(function(){ note.textContent = okMsg; }, fallback); } catch (e) { fallback(); }
+}
+el('codeCopy').addEventListener('click', function(){ copyText(lastOrder.code, 'Code copied: ' + lastOrder.code); });
+el('codeMsg').addEventListener('click', function(){ copyText(lastOrder.text, 'Order message copied. You can paste it into WhatsApp.'); });
+el('codeSave').addEventListener('click', function(){
+  var body = 'Beads by Jummymira\nOrder code: ' + lastOrder.code + '\n\nCheck your order any time: ' + siteUrl() + '#track\n';
+  try {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type:'text/plain'})); a.download = 'order-' + lastOrder.code + '.txt';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1500);
+    el('codeNote').textContent = 'Saved as a text file.';
+  } catch (e) { el('codeNote').textContent = 'Could not save a file here. Use Copy code instead.'; }
 });
-el('copyBtn').addEventListener('click', function(){
-  var ta = el('summaryText'), note = el('copyNote');
-  function fallback(){ ta.focus(); ta.select(); note.textContent = 'Select the text and copy it, then paste it into our chat.'; }
-  try { navigator.clipboard.writeText(ta.value).then(function(){ note.textContent = 'Copied. Paste it into our chat and send it.'; }, fallback); }
-  catch (err){ fallback(); }
+el('codeShare').addEventListener('click', function(){
+  try { navigator.share({title:'My order code', text:'Beads by Jummymira order code: ' + lastOrder.code}).catch(function(){}); } catch (e) {}
 });
-el('editBtn').addEventListener('click', function(){
-  done.hidden = true; form.hidden = false;
-  el('orderTitle').textContent = sheetMode === 'rent' ? 'Your rental' : 'Your order';
-  renderItems();
+function closeCode(){ if (codeDlg.close) codeDlg.close(); else codeDlg.removeAttribute('open'); }
+el('codeDone').addEventListener('click', closeCode);
+el('codeClose').addEventListener('click', closeCode);
+el('codeTrack').addEventListener('click', function(e){
+  e.preventDefault(); closeCode();
+  el('tCode').value = lastOrder.code;
+  if (location.hash === '#track') route(); else location.hash = '#track';
+  checkOrder(lastOrder.code);
 });
-el('clearBtn').addEventListener('click', function(){
-  cart[sheetMode] = {}; store('jm_cart3', JSON.stringify(cart));
-  onCartChange(); closeOrder();
+codeDlg.addEventListener('click', function(e){ if (e.target === codeDlg) closeCode(); });
+
+/* ---------- Track an order ---------- */
+var STEPS = {
+  sale: ['Order placed','Payment confirmed','Order confirmed','Ready for delivery','Out for delivery','Delivered'],
+  rent: ['Order placed','Payment confirmed','Order confirmed','Ready for delivery','Out for delivery','Delivered','Returned','Deposit refunded']
+};
+var STEP_IDX = {'New':0,'Confirmed':1,'Ready for delivery':2,'Out for delivery':3,'Delivered':4,'Returned':5,'Deposit refunded':6};
+var HEADLINE = {'New':'Order received','Confirmed':'Order confirmed','Ready for delivery':'Ready for delivery','Out for delivery':'Out for delivery','Delivered':'Delivered','Returned':'Return received','Deposit refunded':'Deposit refunded','Cancelled':'Order cancelled'};
+function statusCopy(d){
+  var rent = d.type === 'rent';
+  var c = {
+    'New': d.payStatus === 'Payment confirmed' ? 'Your payment is confirmed. We will confirm your order shortly.' : (d.payStatus === 'Payment reported' ? 'We are checking our account for your payment. We confirm your order once the money shows.' : 'We have received your order. Send your payment by transfer so we can confirm it.'),
+    'Confirmed':'Your order is confirmed. We are getting your pieces ready.',
+    'Ready for delivery':'Your order is ready for delivery. We will let you know when it is on its way.',
+    'Out for delivery':'Your order is on its way to you.',
+    'Delivered': rent ? 'Your rental has been delivered. Enjoy it, and keep the pieces safe for the return pickup.' : 'Your order has been delivered. Thank you for shopping with us!',
+    'Returned':'We have received your return. We are inspecting the pieces, then your deposit will be refunded.',
+    'Deposit refunded':'Your deposit has been refunded. Thank you for renting with us!',
+    'Cancelled':'This order was cancelled. Message us if you have any questions.'
+  };
+  return c[d.status] || '';
+}
+function trackLookup(code){
+  var c = normCode(code);
+  if (c.length !== 8) return Promise.reject(uErr('Enter the 8-character code from your order. It looks like K7QM-2XPD.'));
+  if (!API){
+    var o = demoOrders()[c];
+    return o ? Promise.resolve(o) : Promise.reject(uErr('We could not find an order with that code. In preview mode only orders placed on this device can be found.'));
+  }
+  return fetch(apiUrl('action=order&code=' + encodeURIComponent(c)), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    if (!d || !d.ok) throw uErr((d && d.error) || 'We could not find an order with that code. Check it and try again.');
+    return d;
+  });
+}
+function renderTrack(d){
+  var steps = STEPS[d.type === 'rent' ? 'rent' : 'sale'], idx = d.status === 'New' ? (d.payStatus === 'Payment confirmed' ? 1 : 0) : STEP_IDX[d.status] + 1, rent = d.type === 'rent';
+  var cancelled = d.status === 'Cancelled';
+  var h = '<div><p class="muted">Order ' + esc(d.code) + ' &middot; ' + (rent ? 'Rental' : 'Purchase') + '</p><h2>' + esc(d.status === 'New' ? (d.payStatus === 'Payment confirmed' ? 'Payment confirmed' : (d.payStatus === 'Payment reported' ? 'Checking your payment' : 'Waiting for payment')) : (HEADLINE[d.status] || d.status)) + '</h2></div>' +
+    '<p>' + esc(statusCopy(d)) + '</p>';
+  if (d.message) h += '<p class="msg"><b>From the shop:</b> ' + esc(d.message) + '</p>';
+  if (d.status === 'New' && d.payStatus !== 'Payment confirmed') h += '<div id="tPay">' + payCardHtml(d) + '</div>';
+  if (!cancelled){
+    h += '<ol class="tsteps" aria-label="Order progress">' + steps.map(function(s, i){
+      return '<li class="' + (i < idx ? 'passed' : (i === idx ? 'now' : '')) + '"' + (i === idx ? ' aria-current="step"' : '') + '>' + esc(s) + '</li>';
+    }).join('') + '</ol>';
+  }
+  h += '<table class="items-t"><tbody>' + d.items.map(function(i){ return '<tr><td>' + Number(i.qty) + ' x ' + esc(i.name) + '</td><td>' + naira(i.price * i.qty) + '</td></tr>'; }).join('') + '</tbody></table>';
+  h += '<dl class="kv2">';
+  if (rent){ h += '<dt>Rental</dt><dd>' + naira(d.rental) + '</dd><dt>Deposit</dt><dd>' + naira(d.deposit) + '</dd>'; if (d.from) h += '<dt>Delivery</dt><dd>' + esc(fmtDate(d.from)) + '</dd><dt>Return</dt><dd>' + esc(fmtDate(d.to)) + '</dd>'; }
+  h += '<dt><b>Total' + (rent ? '' : ' (before delivery)') + '</b></dt><dd><b>' + naira(d.total) + '</b></dd></dl>';
+  var box = el('tResult'); box.innerHTML = h; box.hidden = false;
+  var tp = el('tPay');
+  if (tp) bindPay(tp, d, function(){ renderTrack(d); });
+}
+function checkOrder(code){
+  var btn = el('tBtn'), err = el('tErr');
+  err.hidden = true; el('tResult').hidden = true;
+  btn.disabled = true; btn.textContent = 'Checking...';
+  trackLookup(code).then(function(d){ renderTrack(d); }).catch(function(e){
+    err.textContent = e && e.user ? e.message : 'We could not reach the shop. Check your connection and try again.'; err.hidden = false;
+  }).then(function(){ btn.disabled = false; btn.textContent = 'Check order'; });
+}
+el('trackForm').addEventListener('submit', function(e){ e.preventDefault(); checkOrder(el('tCode').value); });
+function renderRecent(){
+  var list = []; try { list = JSON.parse(store('jm_mine') || '[]'); } catch (e) {}
+  el('recentWrap').hidden = list.length === 0;
+  el('recent').innerHTML = list.map(function(x){
+    return '<button class="chip" type="button" data-code="' + esc(x.code) + '">' + esc(x.code) + ' &middot; ' + (x.type === 'rent' ? 'Rental' : 'Purchase') + '</button>';
+  }).join('');
+}
+el('recent').addEventListener('click', function(e){
+  var b = e.target.closest('[data-code]'); if (!b) return;
+  el('tCode').value = b.dataset.code; checkOrder(b.dataset.code);
 });
 
 /* ---------- Start ---------- */
-renderGrid(el('gridPreview'), LIST.sale.slice(0, 6), 'sale');
-renderGrid(el('gridSale'), LIST.sale, 'sale');
-renderGrid(el('gridRent'), LIST.rent, 'rent');
-renderCopy();
 drawHero();
-applyFilter('sale'); applyFilter('rent');
+load();
 route();
 </script>
 
-</body></html>
+</body>
+</html>
